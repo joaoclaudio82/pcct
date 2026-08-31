@@ -1,0 +1,74 @@
+{
+  "registro": {
+    "shift_verdadeiro": [
+      2.0,
+      4.0,
+      -3.0
+    ],
+    "shift_estimado": [
+      -2.0,
+      -4.0,
+      3.0
+    ],
+    "erro_vox": 0.0
+  },
+  "lesoes_basal": 4,
+  "lesoes_reav": 3,
+  "novas": 0,
+  "desaparecidas": 1,
+  "tabela_lesoes": [
+    {
+      "lesao_basal": 1,
+      "lesao_reav": 1,
+      "vol_basal_mL": 4.2,
+      "vol_reav_mL": 2.39,
+      "Q_basal_mg": 9.1,
+      "Q_reav_mg": 4.17,
+      "delta_Q_pct": -54.2
+    },
+    {
+      "lesao_basal": 2,
+      "lesao_reav": 2,
+      "vol_basal_mL": 13.31,
+      "vol_reav_mL": 17.98,
+      "Q_basal_mg": 40.89,
+      "Q_reav_mg": 63.01,
+      "delta_Q_pct": 54.1
+    },
+    {
+      "lesao_basal": 4,
+      "lesao_reav": 3,
+      "vol_basal_mL": 1.61,
+      "vol_reav_mL": 0.31,
+      "Q_basal_mg": 2.77,
+      "Q_reav_mg": 0.47,
+      "delta_Q_pct": -83.0
+    },
+    {
+      "lesao_basal": 3,
+      "lesao_reav": null,
+      "vol_basal_mL": 0.32,
+      "vol_reav_mL": 0.0,
+      "Q_basal_mg": 0.52,
+      "Q_reav_mg": 0.0,
+      "delta_Q_pct": -100.0
+    }
+  ],
+  "carga": {
+    "TB_basal_mL": 19.43,
+    "TB_reav_mL": 20.68,
+    "Q_basal_mg": 53.3,
+    "Q_reav_mg": 67.6,
+    "delta_Q_pct": 26.8,
+    "IC95_delta_Q_pct": [
+      26.4,
+      28.0
+    ]
+  },
+  "verdade": {
+    "L1": "resposta completa",
+    "L2": "resposta parcial",
+    "L3": "resposta parcial",
+    "L4": "progress\u00e3o"
+  }
+}

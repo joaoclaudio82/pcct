@@ -1,0 +1,1098 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazilian]{babel}
+\usepackage{lmodern}
+\usepackage[margin=2.6cm]{geometry}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,array,longtable}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{titlesec}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.misc,calc}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{colorlinks=true,linkcolor=NavyBlue,urlcolor=NavyBlue,citecolor=NavyBlue}
+
+\definecolor{titleblue}{RGB}{31,78,121}
+
+\titleformat{\section}{\Large\bfseries\color{titleblue}}{\thesection}{0.8em}{}
+\titleformat{\subsection}{\large\bfseries\color{titleblue}}{\thesubsection}{0.8em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\color{titleblue}}{\thesubsubsection}{0.8em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small AI-Photon}
+\fancyhead[R]{\small Proposta de P\&D}
+\fancyfoot[C]{\small Página \thepage\ de \pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\newtcolorbox{caixa}{colback=gray!10,colframe=gray!10,boxrule=0pt,left=2.5mm,right=2.5mm,top=1.5mm,bottom=1.5mm,before skip=10pt,after skip=10pt,arc=0mm}
+\newcommand{\simples}{\textcolor{titleblue}{\textbf{Em termos simples.}}\ }
+\newcommand{\atencao}{\textcolor{titleblue}{\textbf{Ponto de atenção.}}\ }
+
+\setlist{itemsep=2pt,topsep=4pt}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{center}
+\vspace*{1.2cm}
+{\large\bfseries\color{titleblue} PROPOSTA DE PESQUISA APLICADA\\E INOVAÇÃO TECNOLÓGICA}\\[1.6cm]
+{\Huge\bfseries AI-Photon}\\[0.5cm]
+{\LARGE\bfseries Plataforma de Inteligência Artificial para Imagem Espectral Quantitativa em Tomografia por Contagem de Fótons Aplicada à Oncologia}\\[1.1cm]
+\begin{minipage}{0.86\textwidth}
+\centering
+\textbf{Visão central:} construir uma plataforma capaz de \textbf{quantificar}, \textbf{caracterizar}, \textbf{prever} e \textbf{acompanhar} a doença oncológica a partir do dado espectral nativo da tomografia por contagem de fótons (PCCT), combinando imagens multienergéticas, dados clínicos, física de imagem e Inteligência Artificial.
+\end{minipage}
+\vfill
+\begin{tabular}{>{\bfseries}p{4.6cm}p{9.2cm}}
+Proponente: & Grupo de Saúde Digital -- Universidade Estadual do Ceará (UECE)\\
+Empresa-alvo/parceira: & Siemens Healthineers\\
+Parceiro clínico: & Parceiro clínico de diagnóstico por imagem / Omnimagem\\
+Coordenação proposta: & Prof. Bonfim Amaro Jr.\\
+Casos clínicos iniciais: & câncer de pulmão, metástases hepáticas de câncer colorretal e massas renais\\
+Duração sugerida: & 30 meses\\
+Natureza: & Pesquisa aplicada, experimentação tecnológica, validação clínica e prototipação de software\\
+\end{tabular}
+\vspace{1.2cm}
+
+Fortaleza -- Ceará -- Brasil\\2026
+\end{center}
+\end{titlepage}
+
+\tableofcontents
+\newpage
+
+\section{Resumo executivo}
+
+A tomografia computadorizada por contagem de fótons (PCCT, \emph{photon-counting computed tomography}) representa a maior mudança de arquitetura de detectores de TC das últimas décadas. Ao contar fótons individualmente e medir a energia de cada um, o PCCT entrega, em todo exame de rotina, resolução espacial submilimétrica, ausência de ruído eletrônico, redução de dose e, sobretudo, \textbf{informação espectral nativa}: a possibilidade de decompor os tecidos em materiais, quantificar iodo em mg/mL e reconstruir imagens monoenergéticas virtuais sem protocolo especial.
+
+Em oncologia, essa capacidade abre um caminho concreto: transformar a TC, hoje interpretada de forma majoritariamente visual e mensurada por critérios dimensionais como o RECIST, em um exame \textbf{quantitativo, reprodutível e comparável ao longo do tempo}. Parte desse fluxo já é automatizada em soluções comerciais modernas. Assim, a oportunidade de P\&D proposta neste projeto não é apenas ``processar imagens de PCCT'', mas evoluir para uma \textbf{camada de inteligência oncológica espectral, quantitativamente validada e consciente de incerteza}.
+
+O projeto AI-Photon propõe uma plataforma computacional modular que integre imagens espectrais de PCCT, dados clínicos e laboratoriais, informações de tratamento e modelos físicos de formação de imagem. A solução será estruturada para produzir cinco capacidades progressivas:
+
+\begin{enumerate}
+\item \textbf{AI Auto-Quant:} automação reprodutível do fluxo quantitativo espectral, da entrada DICOM aos mapas de materiais, biomarcadores e relatório;
+\item \textbf{AI Ultra-Low-Dose:} redução de dose de radiação por métodos de reconstrução e aprendizado orientados à preservação do biomarcador, e não apenas da aparência visual;
+\item \textbf{AI Spectral Biomarkers:} radiômica espectral para caracterização de tecido tumoral, carga de doença e heterogeneidade intratumoral;
+\item \textbf{AI Predictive Response:} previsão de resposta terapêutica a partir do exame basal, dados clínicos e biomarcadores espectrais;
+\item \textbf{AI Longitudinal Tracking:} acompanhamento quantitativo entre ciclos de tratamento, atualizando as previsões com os dados observados de cada paciente e mantendo o especialista humano como responsável pela decisão clínica.
+\end{enumerate}
+
+Os casos demonstradores iniciais recomendados são três, escolhidos para que cada um explore uma capacidade distinta do PCCT com o mesmo núcleo tecnológico: \textbf{câncer de pulmão} (detecção e caracterização de nódulos em ultra-baixa dose), \textbf{metástases hepáticas de câncer colorretal} (mapas de iodo como biomarcador de perfusão e resposta) e \textbf{massas renais} (caracterização não invasiva por decomposição de materiais). A arquitetura, entretanto, será projetada como \textbf{órgão-configurável}, para posterior extensão a outros sítios tumorais.
+
+Como resultado, espera-se entregar um \textbf{protótipo integrado validado em ambiente clínico}, algoritmos de IA e quantificação espectral, uma base de dados estruturada, protocolos de validação, publicações, ativos de propriedade intelectual e uma rota técnica para eventual transformação do protótipo em software de apoio à decisão e/ou módulo incorporável ao ecossistema de soluções da Siemens Healthineers.
+
+\begin{caixa}
+\simples O projeto não pretende substituir o radiologista ou o oncologista. A proposta é construir uma ``camada inteligente'' que transforme as imagens espectrais e os dados do paciente em medidas quantitativas, previsões e intervalos de confiança, diminuindo tarefas repetitivas e fornecendo informação adicional para a decisão do especialista.
+\end{caixa}
+
+\section{Contexto e oportunidade tecnológica}
+
+\subsection{O que é a tomografia por contagem de fótons?}
+
+Os tomógrafos convencionais utilizam detectores de integração de energia: os raios X são convertidos em luz visível por um cintilador e, em seguida, em sinal elétrico, somando a energia de todos os fótons de uma vez. No PCCT, um semicondutor (telureto de cádmio, no caso do NAEOTOM Alpha) converte cada fóton diretamente em pulso elétrico. Cada fóton é contado individualmente e classificado em faixas (\emph{bins}) de energia.
+
+Essa mudança de arquitetura produz quatro consequências físicas com impacto clínico direto: eliminação do ruído eletrônico, resolução espacial de até cerca de 0,2 mm, melhor eficiência de dose e \textbf{espectralidade nativa em todo exame}. Para um material como o iodo, a assinatura de atenuação em função da energia permite separá-lo dos demais tecidos:
+\begin{equation}
+\mu(E) = a_{1}\, f_{1}(E) + a_{2}\, f_{2}(E),
+\end{equation}
+em que $\mu(E)$ é o coeficiente de atenuação, $f_{1}$ e $f_{2}$ são funções de base (por exemplo, efeito fotoelétrico e espalhamento Compton, ou pares de materiais como água e iodo) e $a_{1}$, $a_{2}$ são os coeficientes estimados voxel a voxel. A partir dessa decomposição obtêm-se imagens monoenergéticas virtuais (VMI), mapas de concentração de iodo e imagens virtuais sem contraste (VNC).
+
+\begin{caixa}
+\simples A TC convencional mede ``quanto o feixe foi atenuado''. O PCCT mede também ``em quais energias'', o que funciona como uma impressão digital dos materiais. Com isso, o mesmo exame informa não só a forma das estruturas, mas quanto iodo (e, portanto, quanto fluxo sanguíneo funcional) existe em cada região de um tumor.
+\end{caixa}
+
+\subsection{O que significa quantificação espectral em oncologia?}
+
+De maneira conceitual, a imagem oncológica quantitativa baseada em PCCT precisa responder a três perguntas:
+
+\begin{enumerate}
+\item \textbf{Onde está a doença?} (detecção e segmentação de lesões)
+\item \textbf{Quanto de doença existe e com quais características teciduais?} (volume, carga tumoral, concentração de iodo, heterogeneidade)
+\item \textbf{Como essas medidas evoluem ao longo do tratamento?} (resposta, progressão, estabilidade)
+\end{enumerate}
+
+Se $c_{I}(x,y,z)$ representa a concentração de iodo estimada em cada voxel, a carga funcional de uma lesão $\Omega$ pode ser expressa por:
+\begin{equation}
+Q_{\Omega} = \int_{\Omega} c_{I}(x,y,z)\, dV,
+\end{equation}
+e a carga tumoral total do paciente pela soma sobre as lesões rastreadas:
+\begin{equation}
+TB = \sum_{\ell} V_{\ell}, \qquad TB_{I} = \sum_{\ell} Q_{\ell}.
+\end{equation}
+Medidas desse tipo, quando obtidas de forma reprodutível, permitem comparar exames de datas diferentes com muito mais sensibilidade do que a medição de diâmetros.
+
+\subsection{Por que Inteligência Artificial?}
+
+A IA pode atuar em praticamente todas as etapas que antecedem ou complementam a quantificação espectral:
+
+\begin{itemize}
+\item segmentação automática de órgãos e lesões;
+\item registro deformável de exames adquiridos em diferentes momentos;
+\item redução de ruído e reconstrução em regimes de baixa dose e baixo contraste;
+\item estabilização e harmonização de atributos radiômicos;
+\item previsão de resposta terapêutica a partir do exame basal;
+\item atualização individualizada das previsões entre ciclos de tratamento;
+\item detecção de exames fora do padrão;
+\item estimação e propagação da incerteza.
+\end{itemize}
+
+O valor científico está em fazer isso \textbf{sem sacrificar a quantificação}. Uma imagem visualmente agradável não é suficiente. O algoritmo deve preservar concentrações de iodo, números de TC em VMI, volumes e atributos radiômicos, pois são essas as grandezas que sustentam a decisão clínica.
+
+\section{Motivação estratégica para a Siemens Healthineers}
+
+A Siemens Healthineers é pioneira e líder mundial em PCCT: o NAEOTOM Alpha foi o primeiro tomógrafo comercial por contagem de fótons do mundo, e a classe NAEOTOM (Alpha.Peak, Alpha.Pro e Alpha.Prime) ampliou o alcance da tecnologia a diferentes perfis de instituição \cite{siemensfda,siemensbr}. O ecossistema syngo e as ferramentas espectrais nativas do equipamento já automatizam reconstrução, geração de VMI, mapas de iodo e fluxos de leitura.
+
+Essa realidade define corretamente a oportunidade de P\&D: a proposta \textbf{não deve duplicar capacidades maduras} do fabricante. O foco será criar e prototipar a próxima camada de inteligência sobre o dado espectral que o equipamento entrega:
+
+\begin{itemize}
+\item quantificação oncológica reprodutível de ponta a ponta, com rastreabilidade;
+\item protocolos de ultra-baixa dose e de redução de contraste validados por erro em biomarcador, e não apenas por qualidade visual;
+\item biomarcadores espectrais de caracterização tecidual e resposta;
+\item previsão pré-tratamento e acompanhamento longitudinal adaptativo;
+\item quantificação explícita de incerteza;
+\item generalização para população, protocolos e prática clínica latino-americana;
+\item integração de imagem espectral, biomarcadores laboratoriais e variáveis clínicas.
+\end{itemize}
+
+\begin{caixa}
+\simples O posicionamento mais forte para uma conversa com a Siemens é: ``não queremos reconstruir o que o NAEOTOM já faz; queremos pesquisar como transformar o dado espectral que ele produz em decisão oncológica quantitativa, preditiva e menos onerosa em dose, contraste e trabalho humano''.
+\end{caixa}
+
+\section{Problema de pesquisa}
+
+O problema central pode ser formulado da seguinte maneira:
+
+\begin{caixa}
+\textbf{Como combinar Inteligência Artificial, imagens espectrais de PCCT, dados clínicos e modelos físicos de formação de imagem para transformar a TC oncológica em um exame quantitativo, preditivo e longitudinal, reduzindo dose, contraste e esforço humano sem perder validade clínica?}
+\end{caixa}
+
+Esse problema se desdobra em seis dificuldades científicas:
+
+\begin{enumerate}
+\item \textbf{Variabilidade anatômica e temporal:} órgãos e tumores mudam de posição, forma e volume entre aquisições e ao longo do tratamento;
+\item \textbf{Regime de baixa estatística:} protocolos de ultra-baixa dose e de baixo contraste elevam o ruído e degradam a estimativa espectral;
+\item \textbf{Poucos dados rotulados:} bases clínicas de PCCT ainda são pequenas e recentes em comparação com grandes bases de radiologia convencional;
+\item \textbf{Estabilidade do biomarcador:} concentração de iodo, VMI e atributos radiômicos variam com protocolo, reconstrução, kernel e fase de contraste;
+\item \textbf{Erro acumulado:} pequenas imprecisões em segmentação, registro, calibração ou decomposição de materiais podem se propagar até o biomarcador final;
+\item \textbf{Generalização:} modelos podem perder desempenho diante de novos protocolos, populações e versões de equipamento ou software.
+\end{enumerate}
+
+\section{Hipótese e tese tecnológica do projeto}
+
+A hipótese central é que uma arquitetura híbrida, combinando \textbf{modelos físicos + métodos estatísticos + aprendizado de máquina}, será mais robusta para quantificação espectral oncológica do que uma estratégia puramente baseada em redes neurais de ponta a ponta.
+
+A tese tecnológica do projeto é:
+
+\begin{caixa}
+A imagem oncológica pode ser transformada em um processo de ciclo fechado: \textbf{Quantificar $\rightarrow$ Prever $\rightarrow$ Tratar $\rightarrow$ Medir $\rightarrow$ Aprender}, no qual o modelo populacional é gradualmente ajustado pelas observações do próprio paciente.
+\end{caixa}
+
+No exame basal, a plataforma utilizará biomarcadores espectrais e padrões populacionais para estimar a resposta esperada. Após cada ciclo de tratamento, utilizará o PCCT de reavaliação para medir a evolução real da carga tumoral e da perfusão. Nos ciclos seguintes, a previsão poderá incorporar tanto o conhecimento populacional quanto a trajetória individual já observada.
+
+\section{Objetivos}
+
+\subsection{Objetivo geral}
+
+Criar e validar uma plataforma computacional baseada em Inteligência Artificial para automação, quantificação, predição e acompanhamento longitudinal em oncologia com PCCT, integrando imagens espectrais, dados clínicos e modelos físicos, de modo a reduzir dose de radiação, volume de contraste e tempo de processamento, produzir biomarcadores tridimensionais reprodutíveis, quantificar a incerteza e oferecer suporte quantitativo à avaliação individualizada da resposta terapêutica.
+
+\subsection{Objetivos específicos}
+
+\begin{enumerate}
+\item estruturar uma base de dados longitudinal e anonimizada de PCCT oncológico;
+\item criar controle de qualidade automático para dados DICOM espectrais, metadados e calibração;
+\item criar modelos de segmentação de órgãos e lesões para os três demonstradores;
+\item criar registro rígido e deformável entre exames e entre datas;
+\item automatizar a quantificação espectral (mapas de iodo, VNC, VMI) e as correções necessárias;
+\item implementar a extração reprodutível de biomarcadores por lesão, por órgão e por paciente;
+\item implementar e comparar estratégias de radiômica espectral com análise de estabilidade;
+\item estudar IA para redução de dose com preservação do biomarcador;
+\item estudar IA para redução de volume de contraste iodado;
+\item criar modelos pré-tratamento de previsão de resposta;
+\item criar modelos longitudinais adaptativos entre ciclos;
+\item estimar e propagar incertezas ao longo da cadeia;
+\item criar interface clínica de revisão e relatório;
+\item validar o sistema retrospectivamente e, posteriormente, em modo prospectivo silencioso;
+\item elaborar rota de transferência tecnológica, propriedade intelectual e evolução regulatória.
+\end{enumerate}
+
+\section{Casos clínicos demonstradores e estratégia de expansão}
+
+\subsection{Demonstradores iniciais}
+
+Recomenda-se iniciar o projeto com três frentes oncológicas complementares, que compartilham o mesmo núcleo tecnológico e exploram capacidades distintas do PCCT:
+
+\paragraph{Demonstrador 1 -- Câncer de pulmão.} Detecção, volumetria e caracterização de nódulos pulmonares em protocolos de ultra-baixa dose, com resolução espacial submilimétrica. A literatura recente demonstra ganho de acurácia volumétrica de nódulos com PCCT em regime de rastreamento \cite{lungvol}, criando base natural para um demonstrador com forte apelo de saúde populacional.
+
+\paragraph{Demonstrador 2 -- Metástases hepáticas de câncer colorretal.} Detecção e acompanhamento de lesões hepáticas com reconstruções espectrais otimizadas e mapas de iodo como biomarcador de perfusão tumoral e de resposta a tratamento sistêmico \cite{crlm,liveriodine}. É o caso que mais utiliza a espectralidade nativa e o elo direto com decisões de oncologia clínica.
+
+\paragraph{Demonstrador 3 -- Massas renais.} Caracterização não invasiva de massas renais por decomposição de materiais e quantificação de realce, com potencial de reduzir exames adicionais e biópsias. Estudo prospectivo recente comparou PCCT com ressonância magnética nessa tarefa com resultados promissores \cite{renal}. É o caso de menor volume, adequado para avaliar a generalização do pipeline.
+
+\begin{caixa}
+\simples Os três demonstradores foram escolhidos como um ``teste triplo'' da mesma plataforma: o pulmão força o limite de dose e resolução; o fígado força o limite da quantificação espectral; o rim força a capacidade de caracterizar tecido. Se o núcleo funcionar nos três, a generalização para outros sítios tumorais se torna uma extensão natural.
+\end{caixa}
+
+\subsection{Expansão planejada}
+
+Após validação do núcleo tecnológico, a arquitetura poderá ser estendida para:
+
+\begin{itemize}
+\item outros sítios tumorais (pâncreas, cabeça e pescoço, linfoma);
+\item rastreamento oportunista quantitativo (escore de cálcio coronário e densidade óssea em exames oncológicos de rotina);
+\item integração com dados de anatomia patológica e genômica;
+\item protocolos multicêntricos e diferentes gerações de equipamentos.
+\end{itemize}
+
+O software será, portanto, \textbf{órgão-configurável}: estruturas de interesse, fases de contraste, reconstruções espectrais, modelos de segmentação e regras de biomarcador serão isolados em módulos configuráveis.
+
+\section{Arquitetura geral da solução}
+
+A Figura \ref{fig:arch} apresenta a arquitetura conceitual.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw=titleblue!70, fill=titleblue!4, rounded corners=2pt, align=center, font=\small, inner sep=5pt},
+  seta/.style={-{Stealth[length=2.6mm]}, draw=titleblue!80, thick},
+  node distance=7mm and 9mm
+]
+\node[box] (pcct) {PCCT espectral\\bins, VMI, mapas};
+\node[box, right=of pcct] (clin) {Dados clínicos,\\laboratoriais\\e de tratamento};
+\node[box, below=9mm of $(pcct)!0.5!(clin)$] (gateway) {Gateway DICOM\\+ anonimização +\\controle de qualidade};
+\node[box, below left=9mm and 14mm of gateway] (seg) {Segmentação\\e registro};
+\node[box, below=9mm of gateway] (quant) {Quantificação espectral\\iodo, VNC, VMI};
+\node[box, below right=9mm and 14mm of gateway] (multi) {Representação\\multimodal};
+\node[box, below=9mm of quant] (bio) {Motor de biomarcadores\\lesão + órgão + paciente};
+\node[box, below=9mm of bio] (ia) {IA preditiva\\e longitudinal};
+\node[box, left=12mm of ia] (dose) {IA ultra-baixa dose\\e menos contraste};
+\node[box, right=12mm of ia] (inc) {Incerteza e\\controle de confiança};
+\node[box, below=9mm of ia] (dash) {Dashboard clínico\\mapas 3D + métricas + relatório + revisão humana};
+\draw[seta] (pcct) -- (gateway);
+\draw[seta] (clin) -- (gateway);
+\draw[seta] (gateway) -- (seg);
+\draw[seta] (gateway) -- (quant);
+\draw[seta] (gateway) -- (multi);
+\draw[seta] (seg) -- (bio);
+\draw[seta] (quant) -- (bio);
+\draw[seta] (multi) -- (ia);
+\draw[seta] (bio) -- (ia);
+\draw[seta] (dose) -- (ia);
+\draw[seta] (inc) -- (dash);
+\draw[seta] (ia) -- (dash);
+\end{tikzpicture}
+\caption{Arquitetura conceitual da plataforma AI-Photon.}
+\label{fig:arch}
+\end{figure}
+
+\subsection{Princípios arquiteturais}
+
+\begin{itemize}
+\item \textbf{modularidade:} cada componente deve poder evoluir independentemente;
+\item \textbf{rastreabilidade:} todo biomarcador deve ser ligado às imagens, aos parâmetros e à versão de algoritmo utilizados;
+\item \textbf{reprodutibilidade:} o mesmo estudo deve produzir o mesmo resultado sob a mesma configuração;
+\item \textbf{human-in-the-loop:} o especialista pode revisar, corrigir e aprovar segmentações e resultados;
+\item \textbf{interoperabilidade:} DICOM/DICOM-SEG/DICOM-SR quando aplicável, DICOMweb e interfaces compatíveis com sistemas clínicos;
+\item \textbf{separação entre pesquisa e uso clínico:} modelos em fase de pesquisa devem operar inicialmente sem modificar condutas.
+\end{itemize}
+
+\section{Metodologia técnica detalhada}
+
+\subsection{Etapa 1 -- Ingestão, organização e governança dos dados}
+
+A plataforma deverá receber, no mínimo:
+
+\begin{itemize}
+\item séries espectrais de PCCT (VMI em múltiplas energias, mapas de iodo, VNC e, quando disponíveis para pesquisa, dados por bin de energia);
+\item séries convencionais associadas (fases de contraste, reconstruções de referência);
+\item parâmetros de aquisição e reconstrução (kV, IQ level, kernel, espessura);
+\item informações de calibração e da versão de software do equipamento;
+\item dados demográficos, função renal e exames laboratoriais selecionados;
+\item marcadores tumorais pertinentes a cada demonstrador (por exemplo, CEA no colorretal);
+\item esquema terapêutico, datas de ciclos e histórico de tratamentos;
+\item avaliação de resposta clínica e por critérios de imagem, quando disponível.
+\end{itemize}
+
+Os dados serão organizados em uma estrutura longitudinal:
+\begin{equation}
+\mathcal{P}_{i} = \left\{ X_{i}^{\text{base}},\, X_{i,1}^{\text{seg}},\, X_{i,2}^{\text{seg}},\, \ldots,\, C_{i},\, T_{i} \right\},
+\end{equation}
+em que $\mathcal{P}_{i}$ representa o paciente $i$, $X^{\text{base}}$ o exame basal, $X^{\text{seg}}$ os exames de seguimento, $C_{i}$ os dados clínicos e $T_{i}$ as informações terapêuticas.
+
+\begin{caixa}
+\simples Antes de treinar qualquer IA, é preciso construir uma base em que os exames corretos estejam ligados ao paciente correto, à data correta, à fase de contraste correta e ao ciclo de tratamento correto. Em quantificação espectral, metadados errados podem ser tão prejudiciais quanto imagens ruins.
+\end{caixa}
+
+\subsection{Etapa 2 -- Controle de qualidade automático}
+
+Será criado um módulo de \emph{quality assurance} (QA) capaz de detectar:
+
+\begin{itemize}
+\item ausência de séries espectrais esperadas;
+\item inconsistências de fase de contraste ou de horário de injeção;
+\item voxel spacing, matriz ou kernel inesperados;
+\item alteração de protocolo entre exames do mesmo paciente;
+\item incompatibilidade entre cabeçalhos DICOM;
+\item valores anômalos de intensidade ou de concentração de iodo;
+\item possível movimento excessivo;
+\item falhas de registro;
+\item distribuição fora do domínio de treinamento da IA.
+\end{itemize}
+
+Cada estudo receberá um \emph{QA score} e alertas antes de prosseguir para as etapas de quantificação.
+
+\subsection{Etapa 3 -- Segmentação automática}
+
+A segmentação deverá identificar estruturas relevantes para cada demonstrador: pulmões, lobos e nódulos; fígado, segmentos hepáticos e lesões metastáticas; rins, córtex, medula e massas renais; além de estruturas de referência (aorta, músculo, baço) para normalização de realce. Serão comparadas estratégias como:
+
+\begin{itemize}
+\item U-Net/3D U-Net;
+\item nnU-Net como baseline forte e autoconfigurável;
+\item arquiteturas híbridas CNN--Transformer;
+\item modelos fundacionais de segmentação médica, quando adequados;
+\item aprendizado semissupervisionado para aproveitar dados não rotulados;
+\item uso das múltiplas reconstruções espectrais como canais de entrada.
+\end{itemize}
+
+A validação utilizará Dice, Jaccard, distância de Hausdorff 95\% (HD95), distância média de superfície e, principalmente, \textbf{impacto da segmentação sobre o biomarcador}. Uma pequena diferença geométrica pode ser irrelevante visualmente e importante quantitativamente, ou vice-versa.
+
+\subsection{Etapa 4 -- Registro multimodal e longitudinal}
+
+O registro alinhará exames adquiridos em diferentes datas e fases. Serão considerados registro rígido, afim, deformável baseado em intensidade, deformável baseado em aprendizado e restrições anatômicas para evitar deformações não fisiológicas. Para uma transformação deformável $\phi$, deseja-se aproximadamente:
+\begin{equation}
+I_{t_{2}}(x) \approx I_{t_{1}}(\phi(x)).
+\end{equation}
+Além de métricas de similaridade de imagem, serão avaliados landmarks, sobreposição de estruturas, consistência do Jacobiano e estabilidade da quantificação. O registro longitudinal é o que permite acompanhar cada lesão individualmente ao longo dos ciclos, inclusive as que regridem ou surgem.
+
+\subsection{Etapa 5 -- Ultra-baixa dose com preservação quantitativa}
+
+Esse subprojeto estuda a possibilidade de adquirir com menos dose, ou de recuperar exames ruidosos, sem perder a utilidade quantitativa. Se $\mathbf{y}$ representa as contagens medidas por bin de energia e $\mathbf{x}$ a distribuição espacial dos coeficientes de materiais, o problema pode ser expresso genericamente por:
+\begin{equation}
+\mathbf{y} \sim \text{Poisson}(\mathbf{A}\mathbf{x} + \mathbf{r}),
+\end{equation}
+onde $\mathbf{A}$ representa o modelo do sistema e $\mathbf{r}$ termos como espalhamento e \emph{background}. A estratégia do projeto será priorizar métodos \textbf{physics-informed} ou \textbf{model-based deep learning}, em que a consistência com os dados medidos é explicitamente preservada. Serão comparados:
+
+\begin{itemize}
+\item reconstruções e denoising de referência do próprio equipamento;
+\item denoising pós-reconstrução com redes profundas;
+\item aprendizado autossupervisionado por exame;
+\item algoritmos desenrolados (\emph{unrolled});
+\item regularização aprendida com termo explícito de consistência física;
+\item simulação de dose reduzida a partir de exames de dose plena para treinamento pareado.
+\end{itemize}
+
+Resultados recentes demonstram a viabilidade de reduzir dose em PCCT de corpo inteiro com denoising por aprendizado profundo \cite{denoise}, reforçando esse eixo. \textbf{Critério fundamental:} a comparação deverá incluir erro em concentração de iodo, erro em números de TC nas VMI, detectabilidade de lesões pequenas e erro nos biomarcadores finais, não apenas PSNR, SSIM ou avaliação visual.
+
+\subsection{Etapa 6 -- Quantificação espectral e calibração}
+
+Após reconstrução e decomposição, o objetivo é obter estimativas confiáveis de concentração de iodo:
+\begin{equation}
+c_{I}(x,y,z,t) \quad [\text{mg/mL}]
+\end{equation}
+e de carga funcional por estrutura:
+\begin{equation}
+Q_{\Omega}(t) = \int_{\Omega} c_{I}(x,y,z,t)\, dV.
+\end{equation}
+
+O módulo deverá documentar e controlar fatores como: exatidão da decomposição de materiais, normalização pelo realce aórtico e pelo débito de contraste, fase de aquisição, efeito de volume parcial, movimento, kernel e nível de energia das VMI, além de sincronização temporal entre injeção e aquisição. A exatidão será ancorada em \textbf{phantoms com insertos de concentração conhecida}, com verificação periódica e rastreável \cite{liveriodine,schwartz}.
+
+\subsection{Etapa 7 -- Radiômica espectral e harmonização}
+
+Para cada lesão e órgão, serão extraídos atributos de intensidade, forma e textura sobre as reconstruções convencionais e espectrais (VMI em múltiplas energias, mapas de iodo). A literatura mostra que a estabilidade radiômica em PCCT depende de dose, energia virtual e parâmetros de reconstrução \cite{radiomics}, portanto o projeto tratará a harmonização como problema científico próprio:
+
+\begin{itemize}
+\item análise de repetibilidade e reprodutibilidade (ICC) por atributo;
+\item seleção de atributos estáveis entre protocolos e energias;
+\item métodos de harmonização estatística entre lotes;
+\item padronização compatível com IBSI;
+\item avaliação do ganho real dos atributos espectrais frente aos convencionais.
+\end{itemize}
+
+\subsection{Etapa 8 -- Redução de contraste iodado}
+
+A alta razão contraste-ruído do PCCT em baixas energias virtuais cria espaço para protocolos com menos contraste iodado, tema já demonstrado em estudos de viabilidade \cite{contrastred}. O projeto avaliará protocolos de volume reduzido com a pergunta científica formulada em termos de biomarcador:
+\begin{equation}
+\left\{ c_{I}^{\text{padrão}} \right\} \longrightarrow \left\{ c_{I}^{\text{reduzido}} \right\}: \quad \text{o erro em } Q_{\Omega} \text{ permanece clinicamente aceitável?}
+\end{equation}
+Os benefícios potenciais incluem menor risco renal, menor custo por exame e maior elegibilidade de pacientes fragilizados, população frequente em oncologia.
+
+\subsection{Etapa 9 -- Motor de biomarcadores}
+
+Serão implementados níveis complementares:
+
+\paragraph{Nível A -- Biomarcadores por lesão e por órgão.} Volume, diâmetros, concentração média e total de iodo, realce normalizado. Adequados para comparação clínica, validação e resultados agregados.
+
+\paragraph{Nível B -- Biomarcadores voxelizados.} Mapas $c_{I}(x,y,z)$ e mapas de mudança entre datas, permitindo avaliar heterogeneidade intratumoral e resposta espacialmente heterogênea.
+
+\paragraph{Nível C -- Referência física.} Phantoms espectrais e protocolos de referência serão utilizados como ancoragem metrológica em subconjuntos selecionados, para avaliar erros dos métodos mais rápidos.
+
+O projeto deverá registrar a origem de cada resultado, por exemplo:
+\begin{center}
+\texttt{biomarker\_method = iodine\_map\_v2.1}\\
+\texttt{segmentation\_model = liver\_seg\_v1.4}\\
+\texttt{calibration\_protocol = pcct\_siteA\_2026}
+\end{center}
+Essa rastreabilidade é essencial para pesquisa reprodutível e futura industrialização.
+
+\subsection{Etapa 10 -- AI Predictive Response}
+
+Esta é uma das principais inovações propostas. Antes do início do tratamento, deseja-se aprender uma função:
+\begin{equation}
+f : \left( X_{\text{PCCT}}^{\text{base}},\, C,\, T \right) \rightarrow \widehat{R},
+\end{equation}
+em que $\widehat{R}$ representa a resposta esperada (variação de carga tumoral, categoria de resposta ou tempo até progressão, conforme o endpoint definido com a equipe clínica). As entradas poderão incluir:
+
+\begin{itemize}
+\item volume tumoral total e número de lesões;
+\item concentração e distribuição de iodo nas lesões;
+\item textura e radiômica espectral;
+\item volumes e características anatômicas;
+\item função renal e hepática;
+\item marcadores laboratoriais selecionados;
+\item esquema terapêutico planejado;
+\item características do histórico terapêutico.
+\end{itemize}
+
+Serão comparados modelos simples e complexos: regressão regularizada, Random Forest/Extra Trees, Gradient Boosting, XGBoost/LightGBM quando permitido pelo ambiente, redes multimodais 3D combinadas a variáveis tabulares e modelos de sobrevivência em fases posteriores. A preferência metodológica será por \textbf{baselines transparentes antes de modelos grandes}.
+
+\subsection{Etapa 11 -- AI Longitudinal Tracking}
+
+Após o primeiro exame de reavaliação, o sistema passa a dispor de informação individual observada:
+\begin{equation}
+TB^{(1)},\quad Q_{\ell}^{(1)},\quad R^{(1)},
+\end{equation}
+onde $R^{(1)}$ pode representar variáveis de resposta do primeiro intervalo. O modelo para o intervalo seguinte pode ser escrito como:
+\begin{equation}
+\widehat{R}^{(2)} = g\left( X^{\text{base}},\, C,\, TB^{(1)},\, Q^{(1)},\, R^{(1)} \right).
+\end{equation}
+Esse mecanismo permite estudar uma transição de:
+\begin{center}
+\textbf{modelo populacional $\longrightarrow$ modelo informado pelo próprio paciente}.
+\end{center}
+
+\begin{caixa}
+\atencao Na fase de pesquisa, a saída preditiva e longitudinal será uma estimativa e não uma recomendação automática de conduta. Qualquer modificação terapêutica deverá permanecer sob responsabilidade da equipe clínica e, em validação prospectiva inicial, o algoritmo deverá operar em \emph{silent mode}.
+\end{caixa}
+
+\subsection{Etapa 12 -- Incerteza e confiança}
+
+Toda medida e toda previsão deverão ser acompanhadas por uma medida de confiança. Em vez de exibir apenas:
+\begin{center}
+\textbf{Carga de iodo tumoral = 142 mg},
+\end{center}
+a plataforma deverá buscar apresentar:
+\begin{center}
+\textbf{Carga de iodo tumoral = 142 mg; intervalo = [128; 156] mg}.
+\end{center}
+
+Serão estudados bootstrap, ensembles, regressão quantílica, métodos Bayesianos, conformal prediction e propagação de incerteza da segmentação e da quantificação. A análise deverá separar, sempre que possível: incerteza de aquisição, de calibração, de segmentação, de registro, de decomposição espectral, do modelo preditivo e da harmonização radiômica.
+
+\section{Plataforma de software}
+
+\subsection{Camadas}
+
+A implementação será dividida em cinco camadas:
+
+\begin{enumerate}
+\item \textbf{Data Layer:} DICOM espectral, banco de metadados, versionamento e anonimização;
+\item \textbf{Imaging Layer:} denoising, registro, segmentação e quantificação espectral;
+\item \textbf{Biomarker Layer:} radiômica, harmonização, agregação por lesão, órgão e paciente;
+\item \textbf{AI Layer:} modelos preditivos, longitudinais e incerteza;
+\item \textbf{Application Layer:} interface, revisão humana, relatórios e integração.
+\end{enumerate}
+
+\subsection{Stack tecnológico sugerido}
+
+A escolha final dependerá dos requisitos de integração da Siemens Healthineers, mas um stack de pesquisa pode incluir:
+
+\begin{itemize}
+\item Python como linguagem principal;
+\item PyTorch/MONAI para IA em imagem médica;
+\item SimpleITK/ITK para processamento e registro;
+\item pydicom/highdicom para DICOM;
+\item PyRadiomics compatível com IBSI para radiômica;
+\item NiBabel/NIfTI no ambiente de pesquisa;
+\item PostgreSQL para metadados estruturados;
+\item armazenamento de objetos para imagens;
+\item FastAPI para serviços;
+\item containers OCI/Docker para reprodutibilidade;
+\item MLflow ou equivalente para rastreio de experimentos;
+\item Git + CI/CD;
+\item frontend web com visualizador DICOM compatível com OHIF ou tecnologia equivalente;
+\item GPU para treinamento e CPU/GPU para inferência, conforme cada módulo.
+\end{itemize}
+
+\subsection{MLOps e rastreabilidade}
+
+Cada modelo deverá ter um \emph{model card} contendo: conjunto de treinamento; critérios de inclusão/exclusão; equipamento/protocolo conhecido; versão de preprocessing; métricas de validação; limitações; população-alvo; condições de uso; versão de código e pesos; e data de aprovação para determinada fase do estudo.
+
+\section{Base de dados e estratégia amostral}
+
+\subsection{Acesso ao equipamento como parte da estratégia}
+
+Diferentemente de tecnologias já disseminadas, o PCCT possui base instalada ainda em expansão no Brasil. Por isso, a estratégia de dados do projeto será construída em três trilhas complementares:
+
+\begin{enumerate}
+\item \textbf{Dados retrospectivos de parceiros que já operam PCCT}, no Brasil e, quando viável, no exterior, mediante acordos de pesquisa;
+\item \textbf{Dados públicos e simulação espectral} (phantoms computacionais, simuladores de aquisição e degradação realista de dose) para as etapas de engenharia e de prova de conceito;
+\item \textbf{Aquisição prospectiva local}, à medida que o acesso a equipamento da classe NAEOTOM se concretize com a Siemens e o parceiro clínico, o que constitui, em si, parte da negociação desta proposta.
+\end{enumerate}
+
+\begin{caixa}
+\atencao A validação em população latino-americana é um ativo estratégico para a Siemens: a maior parte da evidência de PCCT publicada vem da Europa e dos Estados Unidos. Uma base regional bem governada torna o projeto complementar, e não redundante, frente à pesquisa internacional existente.
+\end{caixa}
+
+\subsection{Fases da base}
+
+\begin{description}
+\item[Fase A -- Piloto técnico:] conjunto pequeno, cuidadosamente curado, para validar pipeline, DICOM espectral, segmentação, registro e quantificação;
+\item[Fase B -- Retrospectiva ampliada:] coorte utilizada para criação de modelos e validação cruzada;
+\item[Fase C -- Validação temporal:] pacientes de período posterior ao treinamento;
+\item[Fase D -- Validação externa/multicêntrica:] quando houver parceiro adicional;
+\item[Fase E -- Prospectiva silenciosa:] o sistema gera medidas e previsões em novos pacientes sem interferir na decisão clínica.
+\end{description}
+
+\subsection{Faixas amostrais para planejamento}
+
+Sem conhecer ainda a disponibilidade real de dados, recomenda-se trabalhar com faixas e realizar cálculo amostral específico para cada endpoint.
+
+\begin{table}[htbp]
+\centering
+\caption{Faixas iniciais de planejamento, a serem revistas após o inventário de dados.}
+\begin{tabular}{p{4.2cm}p{9.3cm}}
+\toprule
+\textbf{Fase} & \textbf{Faixa sugerida / finalidade}\\
+\midrule
+Piloto técnico & 20--30 exames para fechar o pipeline ponta a ponta\\
+Retrospectiva inicial & 80--150 pacientes por demonstrador, se disponíveis, para modelos e análise de viabilidade\\
+Expansão & 300--600 pacientes ou mais, idealmente multicêntricos, para modelos multimodais de maior capacidade\\
+Prospectiva silenciosa & 40--80 pacientes como estudo inicial de generalização operacional\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{caixa}
+\atencao Esses números são metas de planejamento, não um cálculo amostral definitivo. O tamanho adequado depende do endpoint, variância observada, número de lesões por paciente, correlação intraindivíduo e objetivo de não-inferioridade ou equivalência. O plano estatístico será congelado antes da validação final.
+\end{caixa}
+
+\subsection{Regionalidade como questão científica}
+
+A criação de uma base no Ceará e no Nordeste brasileiro pode ser tratada como uma contribuição científica e não apenas institucional. Será possível avaliar: \emph{domain shift} entre populações; variações de protocolo; diferenças de reconstrução; transfer learning; domain adaptation; harmonização radiômica; e aprendizado federado em futura expansão multicêntrica.
+
+\section{Desenho experimental e validação}
+
+\subsection{Princípio geral}
+
+A validação será construída em cascata. Um módulo só será considerado útil se o seu benefício permanecer visível na variável clinicamente relevante da etapa seguinte.
+
+\begin{center}
+\textbf{Imagem $\rightarrow$ Quantificação espectral $\rightarrow$ Biomarcador $\rightarrow$ Predição $\rightarrow$ Decisão}.
+\end{center}
+
+\subsection{Métricas}
+
+\begin{table}[htbp]
+\centering
+\caption{Métricas principais por componente.}
+\begin{tabular}{p{3.4cm}p{10.2cm}}
+\toprule
+\textbf{Componente} & \textbf{Métricas principais}\\
+\midrule
+Segmentação & Dice, Jaccard, HD95, distância média de superfície, erro de volume e erro de concentração de iodo na VOI.\\
+Registro & Target Registration Error, sobreposição de estruturas, consistência de landmarks, Jacobiano e impacto sobre o biomarcador.\\
+Denoising/dose & erro em números de TC nas VMI, erro em concentração de iodo, NPS, detectabilidade de baixo contraste, bias; PSNR/SSIM apenas como métricas auxiliares.\\
+Quantificação & erro absoluto/relativo em mg/mL, calibração em phantom, recovery coefficient, repetibilidade e reprodutibilidade.\\
+Radiômica & ICC, estabilidade entre energias/protocolos, redundância e ganho preditivo incremental.\\
+Predição & AUC ou MAE/RMSE conforme o endpoint, $R^{2}$, calibração, intervalos preditivos, cobertura de conformal prediction, validação por paciente.\\
+Operacional & tempo de processamento, necessidade de edição manual, dose e volume de contraste por exame, taxa de falhas e número de alertas QA.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Separação correta dos dados}
+
+A divisão treinamento/validação/teste deverá ocorrer por \textbf{paciente}, e não por lesão ou imagem. Caso existam múltiplas lesões e múltiplos exames de um mesmo paciente, todos devem permanecer no mesmo conjunto durante a validação de generalização. Isso evita \emph{data leakage}, em que o modelo parece generalizar porque recebe no teste informações de um indivíduo que já apareceu no treinamento.
+
+\subsection{Validação de modelos com poucas amostras}
+
+Serão priorizadas: validação cruzada aninhada; bootstrap; modelos parcimoniosos; seleção de atributos dentro do loop de validação; análise por paciente; validação temporal; e conjunto externo quando disponível.
+
+\subsection{Metas técnicas provisórias}
+
+As metas abaixo são referências de engenharia e serão refinadas com a equipe clínica e a Siemens Healthineers:
+
+\begin{itemize}
+\item automatizar a maior parte do processamento com revisão humana orientada por exceção;
+\item reduzir substancialmente o tempo de processamento por paciente;
+\item demonstrar pelo menos uma configuração de dose reduzida com preservação quantitativa aceitável;
+\item demonstrar pelo menos um protocolo de contraste reduzido com erro em biomarcador clinicamente discutível frente ao protocolo de referência;
+\item produzir previsão de resposta melhor que baselines populacionais;
+\item produzir intervalos de incerteza calibrados;
+\item demonstrar generalização temporal e, se possível, externa.
+\end{itemize}
+
+Não se recomenda fixar neste momento um único limite universal de erro, pois a aceitabilidade depende do órgão, da lesão, do método de referência, do protocolo e da finalidade clínica.
+
+\section{Work Packages}
+
+\paragraph{WP1 -- Governança, dados e infraestrutura.}
+\textbf{Objetivo:} estabelecer base de dados, pipeline DICOM espectral, anonimização, controle de qualidade e ambiente reprodutível.
+\textbf{Atividades:} inventário; data dictionary; protocolos; anonimização; armazenamento; QA; MLOps; documentação.
+\textbf{Entregáveis:} \textbf{D1.1} Plano de gestão de dados; \textbf{D1.2} Data lake anonimizado; \textbf{D1.3} Pipeline DICOM; \textbf{D1.4} módulo de QA.
+
+\paragraph{WP2 -- Segmentação, registro e quantificação espectral.}
+\textbf{Objetivo:} automatizar a preparação anatômica e quantitativa das imagens.
+\textbf{Atividades:} segmentação; registro longitudinal; calibração; quantificação de iodo; análise de volume parcial.
+\textbf{Entregáveis:} \textbf{D2.1} modelos de segmentação; \textbf{D2.2} motor de registro; \textbf{D2.3} pipeline quantitativo espectral validado.
+
+\paragraph{WP3 -- Física de imagem e referência metrológica.}
+\textbf{Objetivo:} implementar a referência quantitativa do projeto.
+\textbf{Atividades:} phantoms espectrais; protocolos de calibração; análise de exatidão; propagação de incerteza; benchmark.
+\textbf{Entregáveis:} \textbf{D3.1} protocolo de calibração espectral; \textbf{D3.2} motor de biomarcadores; \textbf{D3.3} protocolo de benchmark.
+
+\paragraph{WP4 -- IA para redução de dose e de contraste.}
+\textbf{Objetivo:} diminuir o custo em dose, contraste e tempo da imagem oncológica quantitativa.
+\textbf{Atividades:} simulação de dose reduzida; denoising com preservação quantitativa; protocolos de contraste reduzido; estudo comparativo.
+\textbf{Entregáveis:} \textbf{D4.1} protótipo AI Ultra-Low-Dose; \textbf{D4.2} protótipo de contraste reduzido; \textbf{D4.3} estudo comparativo de dose e contraste.
+
+\paragraph{WP5 -- IA preditiva e longitudinal.}
+\textbf{Objetivo:} prever resposta antes do tratamento e atualizar a previsão entre ciclos.
+\textbf{Atividades:} radiômica espectral; harmonização; modelos tabulares; modelos multimodais; previsão de resposta; adaptação longitudinal; incerteza.
+\textbf{Entregáveis:} \textbf{D5.1} modelo preditivo; \textbf{D5.2} modelo longitudinal; \textbf{D5.3} módulo de incerteza.
+
+\paragraph{WP6 -- Plataforma, validação e transferência.}
+\textbf{Objetivo:} integrar os módulos e demonstrar operação no fluxo clínico.
+\textbf{Atividades:} backend; frontend; viewer; relatórios; human-in-the-loop; estudo retrospectivo; prospectivo silencioso; propriedade intelectual; documentação de produto.
+\textbf{Entregáveis:} \textbf{D6.1} plataforma integrada; \textbf{D6.2} relatório de validação; \textbf{D6.3} demonstrador clínico; \textbf{D6.4} roadmap de produto/IP/regulação.
+
+\section{Cronograma sugerido}
+
+O cronograma de 30 meses prioriza a entrega antecipada de um pipeline mínimo e adiciona progressivamente as capacidades de IA.
+
+\begin{table}[htbp]
+\centering
+\caption{Cronograma sugerido em 30 meses.}
+\begin{tabular}{p{5.6cm}cc p{5.4cm}}
+\toprule
+\textbf{Atividade} & \textbf{Meses} & & \textbf{Marco}\\
+\midrule
+Governança, CEP, LGPD e inventário & 1--4 & & Base legal/técnica e dicionário de dados\\
+Infraestrutura e pipeline DICOM espectral & 1--6 & & Ingestão e anonimização operacionais\\
+Segmentação e registro & 4--12 & & Primeiros modelos validados retrospectivamente\\
+Quantificação espectral e calibração & 5--14 & & Referência quantitativa do projeto\\
+IA Ultra-Low-Dose & 8--18 & & Comparação dose plena vs. reduzida\\
+Contraste reduzido & 10--20 & & Protótipo de protocolo com menos iodo\\
+AI Predictive Response & 10--22 & & Modelo pré-tratamento\\
+AI Longitudinal Tracking & 15--24 & & Modelo entre ciclos\\
+Incerteza e OOD & 14--24 & & Intervalos de confiança e alertas\\
+Integração da plataforma & 12--26 & & MVP integrado\\
+Validação temporal/externa & 20--28 & & Evidência de generalização\\
+Prospectivo silencioso & 24--29 & & Avaliação em novos pacientes sem interferência clínica\\
+Roadmap de produto, IP e relatório final & 27--30 & & Pacote de transferência tecnológica\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{MVP e evolução tecnológica}
+
+\subsection{MVP 1 -- Quantificação espectral automatizada reprodutível}
+Entrada: PCCT espectral + dados clínicos. Saída: segmentações, mapas de iodo, biomarcadores por lesão e por paciente, mapas selecionados e relatório.
+
+\subsection{MVP 2 -- Imagem quantitativa com menor custo de aquisição}
+Inclui: AI Ultra-Low-Dose + protocolo de contraste reduzido, sempre com validação por erro em biomarcador.
+
+\subsection{MVP 3 -- Predição pré-tratamento}
+Entrada: PCCT basal + dados clínicos + esquema terapêutico. Saída: estimativa de resposta esperada e intervalo de incerteza.
+
+\subsection{MVP 4 -- Acompanhamento longitudinal adaptativo}
+Entrada: dados basais + resultados dos exames de reavaliação. Saída: estimativa atualizada para o intervalo subsequente e alerta de trajetória.
+
+\subsection{Visão de produto}
+A evolução poderá seguir uma escala de maturidade:
+\begin{center}
+\textbf{algoritmos experimentais $\rightarrow$ pipeline reprodutível $\rightarrow$ MVP clínico $\rightarrow$ validação externa $\rightarrow$ industrialização}.
+\end{center}
+
+\section{Equipe e responsabilidades}
+
+A equipe deve ser obrigatoriamente multidisciplinar.
+
+\begin{table}[htbp]
+\centering
+\caption{Perfis e responsabilidades.}
+\begin{tabular}{p{4.4cm}p{9.2cm}}
+\toprule
+\textbf{Perfil} & \textbf{Responsabilidade}\\
+\midrule
+Coordenador de P\&D & governança científica, integração entre IA, software e parceiro clínico, metas, publicações e transferência.\\
+Coordenador técnico de IA & arquitetura de modelos, experimentos, MLOps, revisão de código e validação.\\
+Radiologista & definição clínica, seleção de casos, revisão de imagens, relevância dos endpoints e segurança.\\
+Oncologista clínico & endpoints de resposta, esquemas terapêuticos, interpretação clínica dos biomarcadores.\\
+Físico médico / especialista em física de imagem & calibração espectral, phantoms, quantificação, dose e benchmark.\\
+Pesquisador de visão computacional & segmentação, registro, denoising e modelos 3D.\\
+Pesquisador de ML multimodal & radiômica, dados tabulares, predição, adaptação e incerteza.\\
+Engenheiro de software & backend, APIs, DICOM, banco, integração e interface.\\
+Engenheiro de dados/MLOps & pipeline de dados, versionamento, rastreio, CI/CD e monitoramento.\\
+Alunos de pós-graduação & subproblemas científicos e validações específicas.\\
+Aluno de graduação & curadoria, testes, automação e ferramentas auxiliares sob supervisão.\\
+Especialista regulatório/qualidade & rota SaMD, documentação, gestão de risco e preparação para industrialização.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Divisão institucional sugerida}
+
+\textbf{Grupo de Saúde Digital -- Universidade Estadual do Ceará (UECE):} IA, visão computacional e aprendizado multimodal; otimização e modelagem; construção de software; MLOps e avaliação científica; formação de recursos humanos.
+
+\textbf{Parceiro clínico de diagnóstico por imagem / Omnimagem:} acesso e curadoria dos exames; especialistas; validação clínica; protocolos de aquisição; estudos retrospectivos e prospectivos.
+
+\textbf{Siemens Healthineers:} expertise de equipamentos e do dado espectral; requisitos industriais; orientação de integração; priorização de casos de uso; avaliação de escalabilidade; acesso a equipamento e ferramentas de pesquisa; conexão com roadmap de produto e ecossistema syngo, quando aplicável.
+
+\section{Ética, LGPD, segurança e regulação}
+
+\subsection{Ética em pesquisa}
+
+O uso de dados clínicos deverá ser submetido ao sistema CEP/CONEP quando aplicável, com protocolo de pesquisa específico, critérios de acesso e responsabilidades claramente definidos.
+
+\subsection{Proteção de dados}
+
+Dados de saúde são dados pessoais sensíveis. A governança será baseada em: minimização de dados; anonimização ou pseudonimização conforme a fase; controle de acesso por perfil; logs de acesso; criptografia em trânsito e em repouso; segregação entre identificadores e dados de pesquisa; política de retenção; e análise contínua de risco de reidentificação. A LGPD e documentos técnicos da ANPD serão considerados na definição do tratamento de dados para pesquisa \cite{lgpd,anpd}.
+
+\subsection{Software como dispositivo médico}
+
+Caso o protótipo evolua para finalidade médica de apoio diagnóstico/terapêutico, deverá ser realizado enquadramento regulatório como Software as a Medical Device (SaMD), considerando a regulamentação vigente da Anvisa, incluindo a RDC 657/2022 e eventuais revisões \cite{anvisa}. A documentação de P\&D será organizada desde o início para facilitar futura industrialização: requisitos; arquitetura; versionamento; testes; gestão de risco; evidência de desempenho; rastreabilidade; cibersegurança; e registro de mudanças de modelo.
+
+\begin{caixa}
+\atencao A RDC 657/2022 está incluída na agenda regulatória brasileira para possível revisão. Portanto, o projeto deverá trabalhar com uma \emph{regulatory watch} e não presumir que a redação atual permanecerá inalterada até a fase de produto.
+\end{caixa}
+
+\section{Riscos e estratégias de mitigação}
+
+\begin{table}[htbp]
+\centering
+\caption{Riscos e estratégias de mitigação.}
+\begin{tabular}{p{3.6cm}p{3.8cm}p{5.8cm}}
+\toprule
+\textbf{Risco} & \textbf{Impacto} & \textbf{Mitigação}\\
+\midrule
+Acesso limitado a equipamento PCCT & atraso na base prospectiva & trilhas paralelas: dados retrospectivos de parceiros, dados públicos e simulação espectral; acesso a equipamento como pauta da parceria.\\
+Poucos pacientes & overfitting e baixa generalização & modelos simples, transfer learning, autossupervisão, validação temporal, expansão multicêntrica.\\
+Dados incompletos & impossibilidade de calcular referência & data dictionary, QA, critérios de inclusão e análise de missingness.\\
+Heterogeneidade de protocolos & domain shift & padronização, harmonização, metadados de aquisição e domain adaptation.\\
+Segmentação imprecisa & erro de biomarcador & human-in-the-loop, análise de sensibilidade e QA automático.\\
+Registro deformável inadequado & erro longitudinal & landmarks, restrições anatômicas, alarmes de deformação e revisão visual.\\
+IA melhora imagem, mas altera quantificação & erro silencioso de biomarcador & métricas quantitativas obrigatórias e estudos com phantom.\\
+Modelo preditivo excessivamente confiante & risco clínico & calibração, conformal prediction, OOD detection e revisão humana.\\
+Dificuldade de integração & atraso de produto & arquitetura modular, APIs e padrões DICOM desde o início.\\
+Mudança regulatória & retrabalho & regulatory watch e documentação compatível com qualidade desde P\&D.\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\section{Indicadores de sucesso}
+
+Os KPIs serão divididos em cinco dimensões.
+
+\subsection{Científicos}
+Artigos submetidos a periódicos de radiologia, física médica e IA em saúde; dissertações/teses; participação em congressos; novos métodos validados.
+
+\subsection{Tecnológicos}
+Pipeline automatizado ponta a ponta; percentual de exames processados sem falha; tempo médio de processamento; redução de edição manual; desempenho quantitativo do AI Ultra-Low-Dose; desempenho do protocolo de contraste reduzido; desempenho preditivo e calibração.
+
+\subsection{Clínico-operacionais}
+Redução potencial de dose por exame; redução potencial de volume de contraste; concordância com referência quantitativa; taxa de casos que necessitam intervenção manual; avaliação de usabilidade por especialistas.
+
+\subsection{Inovação}
+Depósitos de software/patentes quando cabíveis; componentes licenciáveis; demonstração integrada; potencial de incorporação ao portfólio industrial.
+
+\subsection{Formação}
+Pesquisadores treinados em imagem espectral quantitativa e IA; formação de alunos em imagem médica quantitativa; fortalecimento de competência regional em PCCT.
+
+\section{Entregáveis consolidados}
+
+Ao final do projeto, espera-se possuir:
+
+\begin{enumerate}
+\item base de dados de PCCT oncológico estruturada e governada;
+\item protocolo de calibração espectral e QA computacional;
+\item modelos de segmentação para os três demonstradores;
+\item módulo de registro longitudinal;
+\item pipeline de quantificação espectral;
+\item motor de biomarcadores por lesão, órgão e paciente;
+\item módulo de radiômica espectral harmonizada;
+\item benchmark metrológico com phantoms em casos selecionados;
+\item protótipo AI Ultra-Low-Dose;
+\item protótipo de protocolo de contraste reduzido;
+\item modelo AI Predictive Response;
+\item modelo AI Longitudinal Tracking;
+\item módulo de incerteza e OOD;
+\item interface clínica integrada;
+\item estudo retrospectivo;
+\item estudo prospectivo silencioso, se autorizado;
+\item documentação técnica;
+\item publicações e formação de recursos humanos;
+\item relatório de propriedade intelectual;
+\item roadmap de industrialização e regulação.
+\end{enumerate}
+
+\section{Estrutura de orçamento}
+
+Os valores deverão ser construídos em conjunto com a Siemens Healthineers, mas a proposta deve prever as seguintes categorias: bolsas para coordenação e pesquisadores; bolsas de pós-graduação e graduação; engenheiro de software contratado; horas de especialista clínico/físico quando aplicável; infraestrutura GPU; armazenamento e backup; servidor de integração; licenças eventualmente necessárias; phantom espectral e materiais de calibração; custos de estudo clínico; missões técnicas e reuniões de integração; publicação e eventos; registro de propriedade intelectual; e serviços regulatórios e de qualidade.
+
+Uma estratégia adequada é dividir o orçamento por WP, permitindo que a Siemens identifique claramente o custo associado a cada capacidade tecnológica.
+
+\section{Propriedade intelectual e transferência tecnológica}
+
+Antes do início dos trabalhos, recomenda-se um acordo definindo:
+
+\begin{itemize}
+\item \textbf{background IP:} conhecimento e software preexistentes de cada parte;
+\item \textbf{foreground IP:} resultados criados durante o projeto;
+\item titularidade e licenciamento;
+\item direitos de uso para pesquisa;
+\item regras de publicação;
+\item período de revisão pré-publicação para proteção de IP;
+\item tratamento de código aberto e dependências;
+\item governança dos dados clínicos;
+\item regras para modelos treinados com dados do parceiro.
+\end{itemize}
+
+O desenho modular facilita separar:
+\begin{center}
+\textbf{núcleo científico} $\;|\;$ \textbf{componentes patenteáveis} $\;|\;$ \textbf{software de integração} $\;|\;$ \textbf{dados clínicos}.
+\end{center}
+
+\section{Diferenciais da proposta}
+
+A proposta se diferencia por oito características:
+
+\begin{enumerate}
+\item \textbf{não se limita à segmentação};
+\item \textbf{não se limita ao denoising};
+\item \textbf{mede impacto final em biomarcador};
+\item \textbf{usa a espectralidade nativa do PCCT como eixo central};
+\item \textbf{integra física de imagem e IA};
+\item \textbf{prevê resposta antes do tratamento};
+\item \textbf{aprende com os ciclos anteriores de cada paciente};
+\item \textbf{reporta incerteza e mantém o especialista no circuito}.
+\end{enumerate}
+
+Uma formulação curta do diferencial é:
+
+\begin{center}
+{\large\bfseries From Spectral Imaging to Predictive and\\Adaptive Quantitative Oncology.}
+\end{center}
+
+\section{Cenário demonstrativo}
+
+Considere um paciente com câncer colorretal metastático que iniciará tratamento sistêmico.
+
+\subsection*{Antes do tratamento}
+
+O sistema recebe o PCCT basal, exames laboratoriais e dados clínicos. Segmenta automaticamente fígado e lesões, quantifica os mapas de iodo e calcula:
+\begin{center}
+Carga tumoral hepática: 96 mL em 7 lesões\\
+Carga de iodo tumoral: 142 mg; intervalo = [128; 156] mg\\
+Resposta esperada ao esquema planejado: redução de 30\% a 45\% na carga de iodo.
+\end{center}
+Esses números são \textbf{estimativas de pesquisa}, apresentadas ao especialista, não uma prescrição.
+
+\subsection*{Após o primeiro intervalo de tratamento}
+
+O paciente realiza o PCCT de reavaliação. O sistema registra os exames, acompanha cada lesão individualmente e estima:
+\begin{center}
+Carga tumoral hepática observada: 71 mL\\
+Carga de iodo observada: 97 mg (redução de 32\%).
+\end{center}
+O sistema registra o erro da previsão e sinaliza duas lesões com comportamento discordante da média.
+
+\subsection*{No intervalo seguinte}
+
+O modelo utiliza os dados originais mais a trajetória real do primeiro intervalo:
+\begin{equation}
+\widehat{R}^{(2)} = g(\text{PCCT}^{\text{base}},\, \text{clínica},\, TB^{(1)},\, Q^{(1)}).
+\end{equation}
+A previsão passa a refletir não somente ``pacientes parecidos'', mas também \textbf{como aquele paciente específico respondeu ao tratamento}.
+
+\begin{caixa}
+\simples É esse mecanismo que dá sentido ao termo ``longitudinal adaptativo''. O sistema começa com conhecimento populacional e, a cada reavaliação, recebe novas evidências sobre o comportamento biológico daquele indivíduo.
+\end{caixa}
+
+\section{Perguntas científicas que podem gerar publicações}
+
+O projeto pode ser decomposto em linhas publicáveis independentes:
+
+\begin{enumerate}
+\item segmentação multimodal de órgãos e lesões sobre reconstruções espectrais;
+\item registro longitudinal com preservação quantitativa;
+\item denoising de PCCT com preservação de biomarcador espectral;
+\item impacto da IA de reconstrução sobre a concentração de iodo;
+\item estabilidade e harmonização de radiômica espectral;
+\item quantificação de iodo como biomarcador de resposta em metástases hepáticas;
+\item volumetria de nódulos pulmonares em ultra-baixa dose;
+\item caracterização de massas renais por decomposição de materiais;
+\item predição de resposta com dados multimodais basais;
+\item modelos longitudinais entre ciclos;
+\item conformal prediction em biomarcadores de imagem;
+\item domain adaptation Brasil vs. coortes externas.
+\end{enumerate}
+
+Essa divisão é importante porque garante valor científico mesmo que um módulo de maior risco, como a predição pré-tratamento, não alcance imediatamente desempenho suficiente para evolução clínica.
+
+\section{Plano de decisão Go/No-Go}
+
+Para um projeto industrial, recomenda-se adotar gates.
+
+\subsection*{Gate 1 -- Mês 6}
+\textbf{Pergunta:} os dados e a infraestrutura são suficientes?\\
+Go se houver: pipeline DICOM espectral funcional, base piloto, calibração documentada e viabilidade de ligar imagens aos ciclos de tratamento.
+
+\subsection*{Gate 2 -- Mês 14}
+\textbf{Pergunta:} existe referência quantitativa reprodutível?\\
+Go se: segmentação, quantificação de iodo e biomarcadores forem reprodutíveis em coorte retrospectiva.
+
+\subsection*{Gate 3 -- Mês 20}
+\textbf{Pergunta:} reduzir dose e contraste é tecnicamente útil?\\
+Go se: pelo menos uma estratégia reduzida preservar o biomarcador dentro de faixa aceitável definida com os especialistas.
+
+\subsection*{Gate 4 -- Mês 24}
+\textbf{Pergunta:} a previsão agrega valor sobre baselines?\\
+Go se: modelo preditivo superar referências populacionais e apresentar calibração adequada.
+
+\subsection*{Gate 5 -- Mês 30}
+\textbf{Pergunta:} há evidência suficiente para industrialização?\\
+Decisão conjunta: continuar P\&D, ampliar multicentro, preparar produto ou manter como ferramenta de pesquisa.
+
+\section{Resultados esperados e impacto}
+
+\subsection{Para pacientes}
+Potencial de: menos radiação e menos contraste por exame; avaliação de resposta mais sensível que critérios puramente dimensionais; menos procedimentos invasivos de caracterização; acompanhamento quantitativo longitudinal.
+
+\subsection{Para serviços de radiologia e oncologia}
+Potencial de: menor trabalho manual; maior padronização; laudos quantitativos comparáveis entre datas; maior throughput; geração automatizada de relatórios quantitativos.
+
+\subsection{Para a Siemens Healthineers}
+Potencial de: novos módulos de IA oncológica sobre a plataforma NAEOTOM; evidência de valor clínico do dado espectral em novos casos de uso; diferenciação tecnológica; validação em uma população latino-americana; ativos de IP e publicações; aproximação com centros clínicos e formação de especialistas na tecnologia.
+
+\subsection{Para o Ceará e para o grupo proponente}
+Potencial de: criar competência regional em IA para imagem espectral; formar recursos humanos em área de alta complexidade; estabelecer base para novos projetos em TC quantitativa; atrair cooperações e ensaios; consolidar um núcleo de pesquisa em oncologia computacional por imagem.
+
+\section{Mensagem recomendada para apresentação à empresa}
+
+A proposta pode ser resumida para uma reunião executiva da seguinte forma:
+
+\begin{caixa}
+A TC oncológica atual responde principalmente à pergunta: \emph{``como a doença aparece?''}
+
+O AI-Photon propõe avançar para três perguntas:
+\begin{enumerate}
+\item \textbf{Quanta doença existe, medida em números reprodutíveis?}
+\item \textbf{Como este paciente provavelmente responderá ao tratamento?}
+\item \textbf{O que podemos aprender com cada reavaliação para tornar a próxima estimativa mais individualizada?}
+\end{enumerate}
+
+A tecnologia proposta une o dado espectral do PCCT, física de imagem e IA em um ciclo contínuo de quantificação, previsão, medição e adaptação.
+\end{caixa}
+
+\section{Próximos passos recomendados}
+
+Antes da submissão final à Siemens Healthineers, recomenda-se realizar uma reunião técnica curta com cinco decisões objetivas:
+
+\begin{enumerate}
+\item confirmar os demonstradores oncológicos prioritários;
+\item inventariar quantidade e tipos de dados de PCCT acessíveis (parceiros, acordos, simulação);
+\item identificar equipamentos e protocolos de aquisição envolvidos;
+\item definir quais módulos são prioritários para a Siemens: Ultra-Low-Dose, contraste reduzido, Predictive Response ou Longitudinal Tracking;
+\item fechar escopo, duração, equipe, orçamento e propriedade intelectual.
+\end{enumerate}
+
+Com essas respostas, esta proposta pode ser convertida em uma versão contratual com metas quantitativas, TRLs, orçamento detalhado e responsabilidades institucionais.
+
+\begin{thebibliography}{13}
+
+\bibitem{siemensfda} SIEMENS HEALTHINEERS. \emph{Siemens Healthineers Receives FDA Clearance for Naeotom Alpha Class of Photon-Counting Computed Tomography Scanners}. Disponível em: \url{https://www.siemens-healthineers.com/en-us/press-room/press-releases/naeotom-family-fda-clearance}. Acesso em: 31 ago. 2026.
+
+\bibitem{siemensbr} SIEMENS HEALTHINEERS BRASIL. \emph{Tomografia computadorizada NAEOTOM Alpha com contagem de fótons}. Disponível em: \url{https://www.siemens-healthineers.com/br/computed-tomography/naeotom/naeotom-alpha}. Acesso em: 31 ago. 2026.
+
+\bibitem{schwartz} SCHWARTZ, F. R.; SODICKSON, A. D.; PICKHARDT, P. J.; SAHANI, D. V.; LEV, M. H.; GUPTA, R. Photon-Counting CT: Technology, Current and Potential Future Clinical Applications, and Overview of Approved Systems and Those in Various Stages of Research and Development. \emph{Radiology}, v. 314, n. 3, 2025. DOI: \url{https://doi.org/10.1148/radiol.240662}.
+
+\bibitem{bruno} BRUNO, E.; PALMISANO, A.; CAMISASSA, E.; VIGNALE, D.; TACCHETTI, C.; ESPOSITO, A. et al. Photon-counting detector CT in oncology: a new era of cancer imaging. \emph{Insights into Imaging}, v. 17, art. 15, 2026. DOI: \url{https://doi.org/10.1186/s13244-025-02176-2}.
+
+\bibitem{wjr} Applications of photon-counting CT in oncologic imaging: a systematic review. \emph{World Journal of Radiology}, v. 17, n. 8, 2025. Disponível em: \url{https://www.wjgnet.com/1949-8470/full/v17/i8/107732.htm}.
+
+\bibitem{lungvol} Improvement of Lung Nodule Volumetric Accuracy with Photon-counting Computed Tomography over Energy-integrating Computed Tomography in Low-dose Screening. \emph{Investigative Radiology}, 2025. DOI: \url{https://doi.org/10.1097/RLI.0000000000001299}.
+
+\bibitem{crlm} Analysis of colorectal liver metastases in photon-counting detector CT: optimizing imaging through spectral reconstruction. \emph{Cancer Imaging}, v. 26, 2026. DOI: \url{https://doi.org/10.1186/s40644-026-01044-6}.
+
+\bibitem{liveriodine} Liver Iodine Quantification with Photon-Counting Detector CT: Accuracy in an Abdominal Phantom and Feasibility in Patients. \emph{Academic Radiology}, 2022. Disponível em: \url{https://pubmed.ncbi.nlm.nih.gov/35644755/}.
+
+\bibitem{renal} HOMAYOUNIEH, F. et al. A Prospective Study of the Diagnostic Performance of Photon-Counting CT Compared with MRI in the Characterization of Renal Masses. \emph{Investigative Radiology}, 2024. DOI: \url{https://doi.org/10.1097/RLI.0000000000001087}.
+
+\bibitem{denoise} Evaluation of a Deep Learning Denoising Algorithm for Dose Reduction in Whole-Body Photon-Counting CT Imaging: A Cadaveric Study. \emph{Academic Radiology}, 2025. Disponível em: \url{https://pubmed.ncbi.nlm.nih.gov/39818525/}.
+
+\bibitem{radiomics} Robustness of radiomics within photon-counting detector CT: impact of acquisition and reconstruction factors. \emph{European Radiology}, 2025. DOI: \url{https://doi.org/10.1007/s00330-025-11374-x}.
+
+\bibitem{contrastred} Potential of photon-counting detector CT technology for contrast medium reduction in portal venous phase thoracoabdominal CT. \emph{European Radiology}, 2025. DOI: \url{https://doi.org/10.1007/s00330-025-11409-3}.
+
+\bibitem{lgpd} BRASIL. Lei n. 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD), texto compilado. Disponível em: \url{https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709compilado.htm}. Acesso em: 31 ago. 2026.
+
+\bibitem{anpd} AUTORIDADE NACIONAL DE PROTEÇÃO DE DADOS (ANPD). \emph{A LGPD e o tratamento de dados pessoais para fins acadêmicos e para a realização de estudos por órgão de pesquisa}. Documento técnico orientativo.
+
+\bibitem{anvisa} AGÊNCIA NACIONAL DE VIGILÂNCIA SANITÁRIA (ANVISA). RDC n. 657, de 24 de março de 2022. Dispõe sobre a regularização de Software como Dispositivo Médico (Software as a Medical Device -- SaMD). Disponível em: \url{https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2022/software-como-dispositivo-medico-perguntas-e-respostas}. Acesso em: 31 ago. 2026.
+
+\end{thebibliography}
+
+\appendix
+
+\section{Checklist para fechar a versão a ser enviada à Siemens}
+
+Antes do envio, preencher:
+
+\begin{itemize}[label=$\square$]
+\item nome oficial do grupo/laboratório;
+\item nome do responsável na Siemens Healthineers;
+\item instituição clínica participante;
+\item equipamento(s) PCCT acessíveis e localização;
+\item demonstradores oncológicos confirmados;
+\item número aproximado de pacientes retrospectivos por demonstrador;
+\item existência de exames longitudinais (basal + reavaliações);
+\item disponibilidade de séries espectrais arquivadas (VMI, iodo, VNC);
+\item método de quantificação atualmente empregado;
+\item especialistas de radiologia, oncologia e física médica;
+\item duração contratual;
+\item orçamento;
+\item regras de propriedade intelectual;
+\item metas quantitativas por WP;
+\item entregáveis exigidos pela Siemens;
+\item plano de publicação;
+\item fluxo de aprovação ética e LGPD.
+\end{itemize}
+
+\section{Glossário didático}
+
+\begin{description}
+\item[AI/IA] Inteligência Artificial.
+\item[PCCT] Tomografia computadorizada por contagem de fótons (\emph{photon-counting CT}).
+\item[Detector de contagem de fótons] Detector semicondutor que converte cada fóton de raio X diretamente em sinal elétrico, contando-o e medindo sua energia.
+\item[Bin de energia] Faixa de energia na qual os fótons detectados são classificados.
+\item[VMI] Imagem monoenergética virtual, reconstruída como se o feixe tivesse uma única energia.
+\item[VNC] Imagem virtual sem contraste, calculada removendo-se a contribuição do iodo.
+\item[Mapa de iodo] Imagem paramétrica da concentração de iodo em mg/mL, usada como medida de perfusão.
+\item[Decomposição de materiais] Separação da atenuação medida em contribuições de materiais de base.
+\item[DICOM] Padrão para armazenamento e comunicação de imagens médicas.
+\item[HU] Unidade Hounsfield, escala dos números de TC.
+\item[Radiômica] Extração de grande número de atributos quantitativos de imagens médicas.
+\item[IBSI] Iniciativa de padronização de biomarcadores de imagem.
+\item[RECIST] Critério dimensional padronizado de avaliação de resposta em tumores sólidos.
+\item[ICC] Coeficiente de correlação intraclasse, medida de reprodutibilidade.
+\item[Domain shift] Mudança estatística entre os dados de treinamento e os dados encontrados em uso real.
+\item[OOD] \emph{Out-of-Distribution}; exame que difere significativamente do domínio conhecido pelo modelo.
+\item[Human-in-the-loop] Processo em que o algoritmo auxilia, mas a revisão humana permanece parte explícita do fluxo.
+\item[SaMD] \emph{Software as a Medical Device}.
+\end{description}
+
+\end{document}

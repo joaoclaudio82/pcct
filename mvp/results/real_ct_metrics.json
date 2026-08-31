@@ -1,0 +1,299 @@
+{
+  "torax": {
+    "fonte": "CTChest.nrrd (3D Slicer SampleData)",
+    "qa": {
+      "score": 80,
+      "alerts": [
+        "faixa de HU inesperada: [-3024, 3071]"
+      ],
+      "hu_range": [
+        -3024.0,
+        3071.0
+      ],
+      "spacing": [
+        2.5,
+        0.76,
+        0.76
+      ],
+      "shape": [
+        139,
+        512,
+        512
+      ]
+    },
+    "pulmoes": {
+      "volume_L": 6.45,
+      "mean_hu": -820.78,
+      "emphysema_pct": 0.31,
+      "volume_IC_L": [
+        6.11,
+        6.79
+      ]
+    },
+    "candidatos_nodulo": [
+      {
+        "centroid": [
+          66.5,
+          270.7,
+          205.3
+        ],
+        "volume_mL": 0.521,
+        "diam_eq_mm": 10.0,
+        "mean_hu": -15.3,
+        "elongation": 1.64
+      },
+      {
+        "centroid": [
+          99.0,
+          155.2,
+          347.5
+        ],
+        "volume_mL": 0.347,
+        "diam_eq_mm": 8.7,
+        "mean_hu": -38.0,
+        "elongation": 1.32
+      },
+      {
+        "centroid": [
+          70.5,
+          263.2,
+          178.9
+        ],
+        "volume_mL": 0.328,
+        "diam_eq_mm": 8.6,
+        "mean_hu": -21.1,
+        "elongation": 2.19
+      },
+      {
+        "centroid": [
+          91.7,
+          224.0,
+          210.9
+        ],
+        "volume_mL": 0.325,
+        "diam_eq_mm": 8.5,
+        "mean_hu": -18.3,
+        "elongation": 1.33
+      },
+      {
+        "centroid": [
+          76.0,
+          169.5,
+          332.9
+        ],
+        "volume_mL": 0.28,
+        "diam_eq_mm": 8.1,
+        "mean_hu": -30.4,
+        "elongation": 2.12
+      },
+      {
+        "centroid": [
+          82.2,
+          291.8,
+          316.3
+        ],
+        "volume_mL": 0.251,
+        "diam_eq_mm": 7.8,
+        "mean_hu": -26.5,
+        "elongation": 2.19
+      },
+      {
+        "centroid": [
+          100.2,
+          267.6,
+          248.3
+        ],
+        "volume_mL": 0.231,
+        "diam_eq_mm": 7.6,
+        "mean_hu": -0.1,
+        "elongation": 1.37
+      },
+      {
+        "centroid": [
+          79.7,
+          270.3,
+          208.2
+        ],
+        "volume_mL": 0.222,
+        "diam_eq_mm": 7.5,
+        "mean_hu": -30.0,
+        "elongation": 2.3
+      }
+    ]
+  },
+  "abdome": {
+    "fonte": "CTLiver.nrrd (Medical Segmentation Decathlon, liver_100)",
+    "qa": {
+      "score": 100,
+      "alerts": [],
+      "hu_range": [
+        -1024.0,
+        3071.0
+      ],
+      "spacing": [
+        1.4,
+        1.4,
+        1.4
+      ],
+      "shape": [
+        342,
+        256,
+        256
+      ]
+    },
+    "figado_mL": 2454.0,
+    "lesoes_hipodensas": [
+      {
+        "centroid": [
+          281.0,
+          157.6,
+          161.3
+        ],
+        "volume_mL": 94.66,
+        "diam_eq_mm": 56.5,
+        "mean_hu": 47.0,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          45.65,
+          139.38
+        ]
+      },
+      {
+        "centroid": [
+          306.6,
+          168.3,
+          115.8
+        ],
+        "volume_mL": 3.96,
+        "diam_eq_mm": 19.6,
+        "mean_hu": 47.0,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          1.31,
+          7.54
+        ]
+      },
+      {
+        "centroid": [
+          279.7,
+          150.3,
+          234.7
+        ],
+        "volume_mL": 2.06,
+        "diam_eq_mm": 15.8,
+        "mean_hu": 62.3,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          0.65,
+          3.85
+        ]
+      },
+      {
+        "centroid": [
+          253.8,
+          156.2,
+          201.7
+        ],
+        "volume_mL": 1.52,
+        "diam_eq_mm": 14.3,
+        "mean_hu": 54.7,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          0.56,
+          2.8
+        ]
+      },
+      {
+        "centroid": [
+          261.0,
+          134.0,
+          224.3
+        ],
+        "volume_mL": 1.27,
+        "diam_eq_mm": 13.4,
+        "mean_hu": 55.3,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          0.47,
+          2.35
+        ]
+      },
+      {
+        "centroid": [
+          256.3,
+          192.0,
+          171.7
+        ],
+        "volume_mL": 1.15,
+        "diam_eq_mm": 13.0,
+        "mean_hu": 59.1,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          0.37,
+          2.3
+        ]
+      },
+      {
+        "centroid": [
+          256.1,
+          169.7,
+          210.1
+        ],
+        "volume_mL": 1.14,
+        "diam_eq_mm": 12.9,
+        "mean_hu": 59.8,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          0.3,
+          2.41
+        ]
+      },
+      {
+        "centroid": [
+          245.8,
+          108.5,
+          232.4
+        ],
+        "volume_mL": 1.05,
+        "diam_eq_mm": 12.6,
+        "mean_hu": 61.4,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          0.28,
+          2.23
+        ]
+      },
+      {
+        "centroid": [
+          257.6,
+          130.5,
+          235.2
+        ],
+        "volume_mL": 0.97,
+        "diam_eq_mm": 12.3,
+        "mean_hu": 61.0,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          0.22,
+          2.2
+        ]
+      },
+      {
+        "centroid": [
+          308.2,
+          171.3,
+          175.8
+        ],
+        "volume_mL": 0.72,
+        "diam_eq_mm": 11.1,
+        "mean_hu": 55.1,
+        "ref_liver_hu": 106.4,
+        "volume_IC_mL": [
+          0.18,
+          1.59
+        ]
+      }
+    ],
+    "carga_tumoral_mL": 108.5
+  }
+}

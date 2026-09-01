@@ -14,6 +14,8 @@ def img64(name):
 ph = json.load(open(f"{R}/phantom_metrics.json"))
 lg = json.load(open(f"{R}/longitudinal_metrics.json"))
 rc = json.load(open(f"{R}/real_ct_metrics.json"))
+nr = json.load(open(f"{R}/neuro_metrics.json"))
+nm = nr["morfometria"]
 
 acc = ph["acuracia"]
 sweep = ph["dose_sweep"]
@@ -135,12 +137,14 @@ footer a {{ color:var(--accent); }}
 <h1>AI-Photon MVP</h1>
 <p class="sub">Resultados iniciais do protótipo de quantificação espectral e acompanhamento
 oncológico descrito na proposta AI-Photon (UECE &times; Siemens Healthineers).
-Cinco avaliações: exatidão do iodo em phantom espectral, redução de dose,
-acompanhamento longitudinal e pipeline anatômico em duas imagens públicas reais de TC.</p>
+Seis avaliações: exatidão do iodo em phantom espectral, redução de dose,
+acompanhamento longitudinal, pipeline anatômico em duas imagens públicas reais de TC
+e morfometria cerebral em TC de crânio pública (Demonstrador 4, demências).</p>
 <div class="chips">
 <span class="chip">MVP 1 · Auto-Quant</span>
 <span class="chip">phantom espectral</span>
 <span class="chip">TC públicas reais</span>
+<span class="chip">neuro · demências</span>
 <span class="chip alert">protótipo de pesquisa · sem validação clínica</span>
 </div>
 </header>
@@ -152,6 +156,7 @@ acompanhamento longitudinal e pipeline anatômico em duas imagens públicas reai
 <div class="kpi"><div class="v">4 &rarr; 3</div><div class="l">lesões rastreadas; 1 resposta completa detectada</div></div>
 <div class="kpi"><div class="v">{tor['pulmoes']['volume_L']:.2f} L</div><div class="l">volume pulmonar na TC de tórax pública</div></div>
 <div class="kpi"><div class="v">{abd['carga_tumoral_mL']:.0f} mL</div><div class="l">carga tumoral hepática na TC pública (IC por segmentação)</div></div>
+<div class="kpi"><div class="v">{nm['ventricles_mL']:.0f} mL</div><div class="l">volume ventricular na TC de crânio pública (morfometria de demências)</div></div>
 </div>
 
 <section>
@@ -241,10 +246,37 @@ multifocal visível no exame.</p>
 </section>
 
 <section>
+<h2>F · Morfometria cerebral<span class="tag">{nr['fonte']}</span></h2>
+<p>Módulo do Demonstrador 4 (neuroimagem quantitativa de demências) em TC de
+crânio pública real: segmentação da cavidade intracraniana com corte
+automático na base do crânio, separação de líquor e parênquima e segmentação
+ventricular por profundidade. Volume intracraniano de {nm['icv_mL']:.0f} mL
+(IC [{nr['incerteza']['icv_IC_mL'][0]:.0f}; {nr['incerteza']['icv_IC_mL'][1]:.0f}] mL),
+parênquima de {nm['parenchyma_mL']:.0f} mL, ventrículos de
+{nm['ventricles_mL']} mL (IC [{nr['incerteza']['ventriculos_IC_mL'][0]};
+{nr['incerteza']['ventriculos_IC_mL'][1]}] mL, {nm['vent_icv_pct']}% da ICV)
+e índice tipo Evans aproximado de {nm['evans_like_index']}, elevado e
+compatível com o alargamento ventricular visível neste exame. São os
+substitutos em TC das medidas de atrofia que hoje exigem RM, na linha da
+literatura de volumetria cerebral em TC por aprendizado profundo.</p>
+<figure><img src="{img64('neuro_eval.png')}" alt="Morfometria cerebral">
+<figcaption>Janela cerebral, cavidade intracraniana com ventrículos e mapa de líquor.</figcaption></figure>
+<div class="tbl"><table>
+<tr><th>medida</th><th>valor</th><th>intervalo</th></tr>
+<tr><td>volume intracraniano (ICV)</td><td>{nm['icv_mL']:.0f} mL</td><td>[{nr['incerteza']['icv_IC_mL'][0]:.0f}; {nr['incerteza']['icv_IC_mL'][1]:.0f}]</td></tr>
+<tr><td>parênquima cerebral</td><td>{nm['parenchyma_mL']:.0f} mL</td><td>&mdash;</td></tr>
+<tr><td>ventrículos</td><td>{nm['ventricles_mL']} mL</td><td>[{nr['incerteza']['ventriculos_IC_mL'][0]}; {nr['incerteza']['ventriculos_IC_mL'][1]}]</td></tr>
+<tr><td>ventrículos / ICV</td><td>{nm['vent_icv_pct']}%</td><td>&mdash;</td></tr>
+<tr><td>índice tipo Evans (aprox.)</td><td>{nm['evans_like_index']}</td><td>&mdash;</td></tr>
+<tr><td>HU média do parênquima</td><td>{nm['parenchyma_mean_hu']}</td><td>&mdash;</td></tr>
+</table></div>
+</section>
+
+<section>
 <h2>Limitações e próximos passos</h2>
 <p>O phantom espectral opera em nível de imagem reconstruída (sem modelo de
 projeções por bin de energia), as segmentações em TC real usam regras
-clássicas sem aprendizado e não há, ainda, dados espectrais reais de PCCT:
+clássicas sem aprendizado (a morfometria cerebral incluída), e não há, ainda, dados espectrais reais de PCCT:
 nenhum resultado aqui é evidência clínica. Próximos passos naturais, na ordem
 dos work packages da proposta: substituir as segmentações clássicas por
 nnU-Net treinada nos conjuntos públicos (MSD, LIDC-IDRI, KiTS), incluir
@@ -254,7 +286,7 @@ parceiros.</p>
 </section>
 
 <footer>
-Imagens públicas: CTChest (3D Slicer SampleData) e CTLiver, caso liver_100 do
+Imagens públicas: CTChest (3D Slicer SampleData); CT de crânio CT_Philips do repositório niivue-images (Rorden Lab, BSD-2); e CTLiver, caso liver_100 do
 <a href="http://medicaldecathlon.com/">Medical Segmentation Decathlon</a>
 (CC-BY-SA), redistribuído pelo projeto 3D Slicer. Protótipo de pesquisa do
 projeto AI-Photon; não é dispositivo médico e não deve apoiar decisão clínica.

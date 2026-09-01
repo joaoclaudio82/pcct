@@ -1,0 +1,41 @@
+{
+  "fonte": "CT_Philips.nii.gz (niivue-images, Rorden Lab, BSD-2)",
+  "qa": {
+    "score": 100,
+    "alerts": [],
+    "hu_range": [
+      -1024.0,
+      2809.0
+    ],
+    "spacing": [
+      0.96,
+      0.96,
+      0.96
+    ],
+    "shape": [
+      256,
+      232,
+      185
+    ]
+  },
+  "morfometria": {
+    "icv_mL": 1452.0,
+    "parenchyma_mL": 1220.0,
+    "csf_mL": 53.0,
+    "ventricles_mL": 23.0,
+    "csf_fraction_pct": 3.7,
+    "vent_icv_pct": 1.58,
+    "evans_like_index": 0.397,
+    "parenchyma_mean_hu": 41.0
+  },
+  "incerteza": {
+    "ventriculos_IC_mL": [
+      15.8,
+      30.7
+    ],
+    "icv_IC_mL": [
+      1380.0,
+      1527.0
+    ]
+  }
+}

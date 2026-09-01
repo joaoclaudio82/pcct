@@ -43,7 +43,7 @@
 \vspace*{1.2cm}
 {\large\bfseries\color{titleblue} PROPOSTA DE PESQUISA APLICADA\\E INOVAÇÃO TECNOLÓGICA}\\[1.6cm]
 {\Huge\bfseries AI-Photon}\\[0.5cm]
-{\LARGE\bfseries Plataforma de Inteligência Artificial para Imagem Espectral Quantitativa em Tomografia por Contagem de Fótons Aplicada à Oncologia}\\[1.1cm]
+{\LARGE\bfseries Plataforma de Inteligência Artificial para Imagem Espectral Quantitativa em Tomografia por Contagem de Fótons Aplicada à Oncologia e à Neurodegeneração}\\[1.1cm]
 \begin{minipage}{0.86\textwidth}
 \centering
 \textbf{Visão central:} construir uma plataforma capaz de \textbf{quantificar}, \textbf{caracterizar}, \textbf{prever} e \textbf{acompanhar} a doença oncológica a partir do dado espectral nativo da tomografia por contagem de fótons (PCCT), combinando imagens multienergéticas, dados clínicos, física de imagem e Inteligência Artificial.
@@ -54,7 +54,7 @@ Proponente: & Grupo de Saúde Digital -- Universidade Estadual do Ceará (UECE)\
 Empresa-alvo/parceira: & Siemens Healthineers\\
 Parceiro clínico: & Parceiro clínico de diagnóstico por imagem / Omnimagem\\
 Coordenação proposta: & Prof. Bonfim Amaro Jr.\\
-Casos clínicos iniciais: & câncer de pulmão, metástases hepáticas de câncer colorretal e massas renais\\
+Casos clínicos iniciais: & câncer de pulmão, metástases hepáticas de câncer colorretal, massas renais e neuroimagem quantitativa de demências (doença de Alzheimer)\\
 Duração sugerida: & 30 meses\\
 Natureza: & Pesquisa aplicada, experimentação tecnológica, validação clínica e prototipação de software\\
 \end{tabular}
@@ -83,7 +83,7 @@ O projeto AI-Photon propõe uma plataforma computacional modular que integre ima
 \item \textbf{AI Longitudinal Tracking:} acompanhamento quantitativo entre ciclos de tratamento, atualizando as previsões com os dados observados de cada paciente e mantendo o especialista humano como responsável pela decisão clínica.
 \end{enumerate}
 
-Os casos demonstradores iniciais recomendados são três, escolhidos para que cada um explore uma capacidade distinta do PCCT com o mesmo núcleo tecnológico: \textbf{câncer de pulmão} (detecção e caracterização de nódulos em ultra-baixa dose), \textbf{metástases hepáticas de câncer colorretal} (mapas de iodo como biomarcador de perfusão e resposta) e \textbf{massas renais} (caracterização não invasiva por decomposição de materiais). A arquitetura, entretanto, será projetada como \textbf{órgão-configurável}, para posterior extensão a outros sítios tumorais.
+Os casos demonstradores iniciais recomendados são quatro, escolhidos para que cada um explore uma capacidade distinta do PCCT com o mesmo núcleo tecnológico: \textbf{câncer de pulmão} (detecção e caracterização de nódulos em ultra-baixa dose), \textbf{metástases hepáticas de câncer colorretal} (mapas de iodo como biomarcador de perfusão e resposta), \textbf{massas renais} (caracterização não invasiva por decomposição de materiais) e \textbf{neuroimagem quantitativa de demências} (morfometria de atrofia, carga cerebrovascular e rastreamento oportunista de neurodegeneração em TC de crânio, com a doença de Alzheimer como caso central). A arquitetura, entretanto, será projetada como \textbf{órgão-configurável}, para posterior extensão a outros sítios tumorais.
 
 Como resultado, espera-se entregar um \textbf{protótipo integrado validado em ambiente clínico}, algoritmos de IA e quantificação espectral, uma base de dados estruturada, protocolos de validação, publicações, ativos de propriedade intelectual e uma rota técnica para eventual transformação do protótipo em software de apoio à decisão e/ou módulo incorporável ao ecossistema de soluções da Siemens Healthineers.
 
@@ -206,7 +206,7 @@ Criar e validar uma plataforma computacional baseada em Inteligência Artificial
 \begin{enumerate}
 \item estruturar uma base de dados longitudinal e anonimizada de PCCT oncológico;
 \item criar controle de qualidade automático para dados DICOM espectrais, metadados e calibração;
-\item criar modelos de segmentação de órgãos e lesões para os três demonstradores;
+\item criar modelos de segmentação de órgãos, lesões e estruturas cerebrais para os quatro demonstradores;
 \item criar registro rígido e deformável entre exames e entre datas;
 \item automatizar a quantificação espectral (mapas de iodo, VNC, VMI) e as correções necessárias;
 \item implementar a extração reprodutível de biomarcadores por lesão, por órgão e por paciente;
@@ -233,8 +233,10 @@ Recomenda-se iniciar o projeto com três frentes oncológicas complementares, qu
 
 \paragraph{Demonstrador 3 -- Massas renais.} Caracterização não invasiva de massas renais por decomposição de materiais e quantificação de realce, com potencial de reduzir exames adicionais e biópsias. Estudo prospectivo recente comparou PCCT com ressonância magnética nessa tarefa com resultados promissores \cite{renal}. É o caso de menor volume, adequado para avaliar a generalização do pipeline.
 
+\paragraph{Demonstrador 4 -- Neuroimagem quantitativa de demências (doença de Alzheimer).} Frente fora do eixo oncológico que reaproveita o mesmo núcleo tecnológico. Os biomarcadores moleculares de Alzheimer (amiloide e tau) pertencem ao PET e ao líquor, e a microestrutura pertence à RM; o papel do PCCT aqui é outro, e é triplo. Primeiro, \textbf{morfometria de atrofia em TC}: com resolução submilimétrica, ausência de ruído eletrônico e melhor contraste entre substância cinzenta e branca, torna-se viável quantificar em TC medidas hoje restritas à RM, como volume ventricular, fração de líquor, atrofia cortical global e atrofia do lobo temporal medial (escala MTA automatizada), já demonstradas em TC convencional com aprendizado profundo \cite{srikrishna2021,srikrishna2024} e favorecidas pela qualidade de imagem cerebral do detector de contagem de fótons \cite{pourmorteza}. Segundo, \textbf{carga cerebrovascular quantitativa}: leucoaraiose, doença de pequenos vasos e calcificações intracranianas, relevantes na demência mista. Terceiro, \textbf{rastreamento oportunista}: todo TC de crânio de rotina em idosos (queda, trauma, suspeita de AVC) torna-se uma oportunidade de triagem quantitativa de neurodegeneração, sem exame adicional. O posicionamento é de \textbf{triagem, estratificação e acompanhamento longitudinal}, nunca de diagnóstico molecular. No contexto brasileiro, em que a RM é escassa e o PET amiloide é praticamente inexistente na rede pública, a TC de crânio é o exame de neuroimagem mais acessível: uma camada de IA que a transforma em triagem quantitativa de demência tem impacto de saúde pública direto e constitui evidência que os centros europeus e norte-americanos não produzirão por nós.
+
 \begin{caixa}
-\simples Os três demonstradores foram escolhidos como um ``teste triplo'' da mesma plataforma: o pulmão força o limite de dose e resolução; o fígado força o limite da quantificação espectral; o rim força a capacidade de caracterizar tecido. Se o núcleo funcionar nos três, a generalização para outros sítios tumorais se torna uma extensão natural.
+\simples Os quatro demonstradores foram escolhidos como um ``teste quádruplo'' da mesma plataforma: o pulmão força o limite de dose e resolução; o fígado força o limite da quantificação espectral; o rim força a capacidade de caracterizar tecido; e o cérebro força a morfometria de precisão sem contraste. Se o núcleo funcionar nos quatro, a generalização para outros sítios e outras condições se torna uma extensão natural.
 \end{caixa}
 
 \subsection{Expansão planejada}
@@ -347,7 +349,7 @@ Cada estudo receberá um \emph{QA score} e alertas antes de prosseguir para as e
 
 \subsection{Etapa 3 -- Segmentação automática}
 
-A segmentação deverá identificar estruturas relevantes para cada demonstrador: pulmões, lobos e nódulos; fígado, segmentos hepáticos e lesões metastáticas; rins, córtex, medula e massas renais; além de estruturas de referência (aorta, músculo, baço) para normalização de realce. Serão comparadas estratégias como:
+A segmentação deverá identificar estruturas relevantes para cada demonstrador: pulmões, lobos e nódulos; fígado, segmentos hepáticos e lesões metastáticas; rins, córtex, medula e massas renais; cavidade intracraniana, parênquima, líquor, ventrículos e hipocampo/lobo temporal medial; além de estruturas de referência (aorta, músculo, baço) para normalização de realce. Serão comparadas estratégias como:
 
 \begin{itemize}
 \item U-Net/3D U-Net;
@@ -607,6 +609,7 @@ Registro & Target Registration Error, sobreposição de estruturas, consistênci
 Denoising/dose & erro em números de TC nas VMI, erro em concentração de iodo, NPS, detectabilidade de baixo contraste, bias; PSNR/SSIM apenas como métricas auxiliares.\\
 Quantificação & erro absoluto/relativo em mg/mL, calibração em phantom, recovery coefficient, repetibilidade e reprodutibilidade.\\
 Radiômica & ICC, estabilidade entre energias/protocolos, redundância e ganho preditivo incremental.\\
+Morfometria cerebral & erro volumétrico vs. referência em RM quando disponível, ICC, concordância da escala MTA automatizada com leitura de especialista.\\
 Predição & AUC ou MAE/RMSE conforme o endpoint, $R^{2}$, calibração, intervalos preditivos, cobertura de conformal prediction, validação por paciente.\\
 Operacional & tempo de processamento, necessidade de edição manual, dose e volume de contraste por exame, taxa de falhas e número de alertas QA.\\
 \bottomrule
@@ -732,6 +735,7 @@ Coordenador de P\&D & governança científica, integração entre IA, software e
 Coordenador técnico de IA & arquitetura de modelos, experimentos, MLOps, revisão de código e validação.\\
 Radiologista & definição clínica, seleção de casos, revisão de imagens, relevância dos endpoints e segurança.\\
 Oncologista clínico & endpoints de resposta, esquemas terapêuticos, interpretação clínica dos biomarcadores.\\
+Neurologista / geriatra & definição clínica da frente de demências, escalas visuais de referência, endpoints cognitivos e segurança.\\
 Físico médico / especialista em física de imagem & calibração espectral, phantoms, quantificação, dose e benchmark.\\
 Pesquisador de visão computacional & segmentação, registro, denoising e modelos 3D.\\
 Pesquisador de ML multimodal & radiômica, dados tabulares, predição, adaptação e incerteza.\\
@@ -938,7 +942,9 @@ O projeto pode ser decomposto em linhas publicáveis independentes:
 \item predição de resposta com dados multimodais basais;
 \item modelos longitudinais entre ciclos;
 \item conformal prediction em biomarcadores de imagem;
-\item domain adaptation Brasil vs. coortes externas.
+\item domain adaptation Brasil vs. coortes externas;
+\item morfometria cerebral em PCCT comparada à RM (volumetria e escala MTA);
+\item rastreamento oportunista de neurodegeneração em TC de crânio de rotina.
 \end{enumerate}
 
 Essa divisão é importante porque garante valor científico mesmo que um módulo de maior risco, como a predição pré-tratamento, não alcance imediatamente desempenho suficiente para evolução clínica.
@@ -970,7 +976,7 @@ Decisão conjunta: continuar P\&D, ampliar multicentro, preparar produto ou mant
 \section{Resultados esperados e impacto}
 
 \subsection{Para pacientes}
-Potencial de: menos radiação e menos contraste por exame; avaliação de resposta mais sensível que critérios puramente dimensionais; menos procedimentos invasivos de caracterização; acompanhamento quantitativo longitudinal.
+Potencial de: menos radiação e menos contraste por exame; avaliação de resposta mais sensível que critérios puramente dimensionais; menos procedimentos invasivos de caracterização; acompanhamento quantitativo longitudinal; triagem de neurodegeneração sem exame adicional para a população idosa.
 
 \subsection{Para serviços de radiologia e oncologia}
 Potencial de: menor trabalho manual; maior padronização; laudos quantitativos comparáveis entre datas; maior throughput; geração automatizada de relatórios quantitativos.
@@ -979,7 +985,7 @@ Potencial de: menor trabalho manual; maior padronização; laudos quantitativos 
 Potencial de: novos módulos de IA oncológica sobre a plataforma NAEOTOM; evidência de valor clínico do dado espectral em novos casos de uso; diferenciação tecnológica; validação em uma população latino-americana; ativos de IP e publicações; aproximação com centros clínicos e formação de especialistas na tecnologia.
 
 \subsection{Para o Ceará e para o grupo proponente}
-Potencial de: criar competência regional em IA para imagem espectral; formar recursos humanos em área de alta complexidade; estabelecer base para novos projetos em TC quantitativa; atrair cooperações e ensaios; consolidar um núcleo de pesquisa em oncologia computacional por imagem.
+Potencial de: criar competência regional em IA para imagem espectral; formar recursos humanos em área de alta complexidade; estabelecer base para novos projetos em TC quantitativa; atrair cooperações e ensaios; consolidar um núcleo de pesquisa em oncologia e neurologia computacionais por imagem, com uma frente de demências alinhada às necessidades do SUS.
 
 \section{Mensagem recomendada para apresentação à empresa}
 
@@ -1044,6 +1050,12 @@ Com essas respostas, esta proposta pode ser convertida em uma versão contratual
 
 \bibitem{anvisa} AGÊNCIA NACIONAL DE VIGILÂNCIA SANITÁRIA (ANVISA). RDC n. 657, de 24 de março de 2022. Dispõe sobre a regularização de Software como Dispositivo Médico (Software as a Medical Device -- SaMD). Disponível em: \url{https://www.gov.br/anvisa/pt-br/assuntos/noticias-anvisa/2022/software-como-dispositivo-medico-perguntas-e-respostas}. Acesso em: 31 ago. 2026.
 
+\bibitem{pourmorteza} POURMORTEZA, A. et al. Photon-Counting CT of the Brain: In Vivo Human Results and Image-Quality Assessment. \emph{AJNR American Journal of Neuroradiology}, 2017.
+
+\bibitem{srikrishna2021} SRIKRISHNA, M. et al. Deep learning from MRI-derived labels enables automatic brain tissue classification on human brain CT. \emph{NeuroImage}, v. 244, art. 118606, 2021. Disponível em: \url{https://pubmed.ncbi.nlm.nih.gov/34571160/}.
+
+\bibitem{srikrishna2024} SRIKRISHNA, M. et al. CT-based volumetric measures obtained through deep learning: association with biomarkers of neurodegeneration. \emph{Alzheimer's \& Dementia}, 2024. DOI: \url{https://doi.org/10.1002/alz.13445}.
+
 \end{thebibliography}
 
 \appendix
@@ -1057,7 +1069,7 @@ Antes do envio, preencher:
 \item nome do responsável na Siemens Healthineers;
 \item instituição clínica participante;
 \item equipamento(s) PCCT acessíveis e localização;
-\item demonstradores oncológicos confirmados;
+\item demonstradores confirmados (oncológicos e frente de demências);
 \item número aproximado de pacientes retrospectivos por demonstrador;
 \item existência de exames longitudinais (basal + reavaliações);
 \item disponibilidade de séries espectrais arquivadas (VMI, iodo, VNC);

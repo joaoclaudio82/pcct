@@ -1,0 +1,14 @@
+classical:
+  lungs:
+    threshold_hu: -320
+  liver:
+    hu_range: [25, 180]
+
+learned:
+  backend: monai
+  threshold: 0.5
+  device: cpu
+  checkpoint: null
+
+validation:
+  metrics: [dice, iou, precision, recall, hd95_mm, asd_mm]

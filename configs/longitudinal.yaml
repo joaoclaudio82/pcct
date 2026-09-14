@@ -1,0 +1,14 @@
+registration:
+  rigid: true
+  deformable: true
+  bspline_mesh_size: [6, 6, 6]
+matching:
+  max_distance_mm: 30.0
+  weights:
+    distance: 0.55
+    volume: 0.25
+    iodine: 0.20
+response:
+  complete_threshold_ml: 0.05
+  partial_q_reduction_pct: 30.0
+  progression_q_increase_pct: 20.0

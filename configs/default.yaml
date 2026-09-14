@@ -1,0 +1,25 @@
+preprocessing:
+  isotropic_spacing_mm: 1.0
+
+segmentation:
+  lung:
+    air_threshold_hu: -320
+    emphysema_threshold_hu: -950
+  liver:
+    min_hu: 25
+    max_hu: 180
+  lesion:
+    min_diameter_mm: 8.0
+
+spectral:
+  energies_keV: [50, 70]
+  noise_hu:
+    50: 14.0
+    70: 9.0
+
+longitudinal:
+  max_match_distance_mm: 30.0
+  matching_weights:
+    distance: 0.55
+    volume: 0.25
+    iodine: 0.20

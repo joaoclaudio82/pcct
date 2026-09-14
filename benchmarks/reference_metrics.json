@@ -1,0 +1,9 @@
+{
+  "benchmark": "compact_full_dose_spectral_quantification",
+  "version": 1,
+  "description": "Maximum accepted quantitative errors for the deterministic compact spectral benchmark.",
+  "maximum_allowed": {
+    "iodine_error_pct": 0.25,
+    "q_error_pct": 0.25
+  }
+}

@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main, "feat/**"]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Set up Python
+        run: uv python install ${{ matrix.python-version }}
+
+      - name: Create environment
+        run: uv sync --extra dev --python ${{ matrix.python-version }}
+
+      - name: Lint core package and tests
+        run: uv run ruff check mvp/ai_photon_mvp tests
+
+      - name: Run tests with coverage
+        run: uv run pytest --cov=ai_photon_mvp --cov-report=term-missing --cov-fail-under=25

@@ -1,0 +1,12 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    command: uv run uvicorn api.main:app --host 0.0.0.0 --port 8000
+
+  app:
+    build: .
+    ports:
+      - "8501:8501"
+    command: uv run streamlit run mvp/app.py --server.address 0.0.0.0

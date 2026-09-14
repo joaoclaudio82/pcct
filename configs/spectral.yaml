@@ -1,0 +1,10 @@
+energies_keV: [50, 70]
+noise_hu:
+  50: 14.0
+  70: 9.0
+benchmark:
+  seed: 2026
+  iodine_mgml: 3.5
+  spacing_mm: 1.5
+  max_iodine_error_pct: 0.25
+  max_q_error_pct: 0.25

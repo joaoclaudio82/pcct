@@ -19,9 +19,11 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-app = [
-    "streamlit>=1.38,<2",
-]
+app = ["streamlit>=1.38,<2"]
+api = ["fastapi>=0.116,<1", "uvicorn[standard]>=0.35,<1", "python-multipart>=0.0.20,<1"]
+radiomics = ["pyradiomics>=3.1,<4"]
+ml = ["torch>=2.4,<3", "monai>=1.4,<2"]
+tracking = ["mlflow>=3.0,<4"]
 dev = [
     "pytest>=8.3,<9",
     "pytest-cov>=5,<7",

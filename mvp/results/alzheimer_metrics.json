@@ -1,0 +1,155 @@
+{
+  "aviso": "prot\u00f3tipo de pesquisa; n\u00e3o diagnostica Alzheimer; PCCT \u00e9 simulado",
+  "phantom_atrofia": {
+    "truth": {
+      "icv_mL": 1398.0,
+      "csf_mL": 322.0,
+      "ventricles_mL": 85.3,
+      "csf_fraction_pct": 23.1,
+      "vent_icv_pct": 6.1,
+      "evans_like_index": 0.48
+    },
+    "eid": {
+      "scanner": "eid",
+      "noise_HU": 12.0,
+      "cnr_gm_wm": 0.33,
+      "ventricles_mL": 16.1,
+      "erro_ventriculos_pct": -81.1,
+      "evans_like": 0.411,
+      "erro_evans_pct": -14.3
+    },
+    "pcct": {
+      "scanner": "pcct",
+      "noise_HU": 6.0,
+      "cnr_gm_wm": 2.67,
+      "ventricles_mL": 79.8,
+      "erro_ventriculos_pct": -6.4,
+      "evans_like": 0.486,
+      "erro_evans_pct": 1.3
+    }
+  },
+  "phantom_controle": {
+    "truth": {
+      "icv_mL": 1398.0,
+      "csf_mL": 89.0,
+      "ventricles_mL": 7.8,
+      "csf_fraction_pct": 6.4,
+      "vent_icv_pct": 0.56,
+      "evans_like_index": 0.22
+    },
+    "eid": {
+      "scanner": "eid",
+      "noise_HU": 12.0,
+      "cnr_gm_wm": 0.34,
+      "ventricles_mL": 3.6,
+      "erro_ventriculos_pct": -54.3,
+      "evans_like": 0.219,
+      "erro_evans_pct": -0.5
+    },
+    "pcct": {
+      "scanner": "pcct",
+      "noise_HU": 6.0,
+      "cnr_gm_wm": 2.67,
+      "ventricles_mL": 7.3,
+      "erro_ventriculos_pct": -6.2,
+      "evans_like": 0.224,
+      "erro_evans_pct": 1.8
+    }
+  },
+  "acuracia_classe_evans_030": {
+    "eid": 87.5,
+    "pcct": 100.0
+  },
+  "exames_publicos": [
+    {
+      "fonte": "CT Philips (niivue)",
+      "arquivo": "CT_head.nii.gz",
+      "metricas": {
+        "icv_mL": 1452.0,
+        "parenchyma_mL": 1220.0,
+        "csf_mL": 53.0,
+        "ventricles_mL": 23.0,
+        "csf_fraction_pct": 3.7,
+        "vent_icv_pct": 1.58,
+        "evans_like_index": 0.397,
+        "parenchyma_mean_hu": 41.0,
+        "ventricles_IC_mL": [
+          15.8,
+          30.7
+        ],
+        "calcium_intracraniano_mL": 0.0
+      },
+      "triagem": {
+        "nivel": "ind\u00edcio de atrofia / hidrocefalia *ex vacuo* no crit\u00e9rio do prot\u00f3tipo",
+        "sinais": [
+          "Evans-like 0.40 \u2265 0,30 (alargamento ventricular poss\u00edvel)"
+        ],
+        "aviso": "N\u00e3o \u00e9 diagn\u00f3stico de Alzheimer. Amiloide/tau s\u00e3o PET ou l\u00edquor. Isto \u00e9 morfometria de TC, para pesquisa."
+      },
+      "qa": {
+        "score": 100,
+        "alerts": [],
+        "hu_range": [
+          -1024.0,
+          2809.0
+        ],
+        "spacing": [
+          0.96,
+          0.96,
+          0.96
+        ],
+        "shape": [
+          256,
+          232,
+          185
+        ]
+      }
+    },
+    {
+      "fonte": "CT-MR Brain (3D Slicer)",
+      "arquivo": "CT_brain.nrrd",
+      "metricas": {
+        "icv_mL": 1476.0,
+        "parenchyma_mL": 1363.0,
+        "csf_mL": 103.0,
+        "ventricles_mL": 18.8,
+        "csf_fraction_pct": 7.0,
+        "vent_icv_pct": 1.28,
+        "evans_like_index": 0.347,
+        "parenchyma_mean_hu": 29.1,
+        "ventricles_IC_mL": [
+          5.1,
+          37.0
+        ],
+        "calcium_intracraniano_mL": 0.0
+      },
+      "triagem": {
+        "nivel": "ind\u00edcio de atrofia / hidrocefalia *ex vacuo* no crit\u00e9rio do prot\u00f3tipo",
+        "sinais": [
+          "Evans-like 0.35 \u2265 0,30 (alargamento ventricular poss\u00edvel)"
+        ],
+        "aviso": "N\u00e3o \u00e9 diagn\u00f3stico de Alzheimer. Amiloide/tau s\u00e3o PET ou l\u00edquor. Isto \u00e9 morfometria de TC, para pesquisa."
+      },
+      "qa": {
+        "score": 80,
+        "alerts": [
+          "faixa de HU inesperada: [-3024, 1977]"
+        ],
+        "hu_range": [
+          -3024.0,
+          1977.0
+        ],
+        "spacing": [
+          2.53,
+          1.29,
+          1.29
+        ],
+        "shape": [
+          76,
+          169,
+          170
+        ]
+      }
+    }
+  ]
+}

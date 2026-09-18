@@ -13,6 +13,12 @@ def geometric_volume_interval(
     iterations: int = 1,
 ) -> tuple[float, float]:
     voxel_ml = float(np.prod(spacing_zyx(spacing)) / 1000.0)
+    mask = volume_array(mask, "mask").astype(bool)
+    if isinstance(iterations, bool) or not isinstance(iterations, (int, np.integer)) or iterations < 0:
+        raise ValueError("iterations must be a nonnegative integer")
+    if iterations == 0:
+        volume = float(mask.sum() * voxel_ml)
+        return volume, volume
     lo = ndi.binary_erosion(mask, iterations=iterations).sum() * voxel_ml
     hi = ndi.binary_dilation(mask, iterations=iterations).sum() * voxel_ml
     return float(lo), float(hi)

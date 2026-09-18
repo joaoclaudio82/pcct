@@ -27,7 +27,28 @@ def match_lesions_hungarian(
     max_distance_mm: float = 30.0,
     weights: dict[str, float] | None = None,
 ) -> tuple[list[tuple[int, int, float]], list[int], list[int]]:
-    weights = weights or {"distance": 0.55, "volume": 0.25, "iodine": 0.20}
+    if not np.isfinite(max_distance_mm) or max_distance_mm <= 0:
+        raise ValueError("max_distance_mm must be finite and positive")
+    weights = {"distance": 0.55, "volume": 0.25, "iodine": 0.20} if weights is None else weights
+    if not weights or set(weights) - {"distance", "volume", "iodine", "features"}:
+        raise ValueError("provide supported matching weights")
+    if any(not np.isfinite(w) or w < 0 for w in weights.values()) or sum(weights.values()) <= 0:
+        raise ValueError("weights must be finite, nonnegative and have a positive sum")
+    total = sum(weights.values())
+    weights = {key: value / total for key, value in weights.items()}
+    for lesions in (baseline, followup):
+        if len({lesion.label for lesion in lesions}) != len(lesions):
+            raise ValueError("lesion labels must be unique within each examination")
+        for lesion in lesions:
+            centroid = np.asarray(lesion.centroid_mm)
+            if centroid.shape != (3,) or not np.all(np.isfinite(centroid)):
+                raise ValueError("centroids must contain three finite coordinates")
+            if not np.isfinite(lesion.volume_ml) or lesion.volume_ml < 0:
+                raise ValueError("lesion volumes must be finite and nonnegative")
+            if lesion.iodine_mean is not None and not np.isfinite(lesion.iodine_mean):
+                raise ValueError("iodine features must be finite")
+            if not np.all(np.isfinite(lesion.feature_vector)):
+                raise ValueError("feature vectors must be finite")
     if not baseline or not followup:
         return [], [x.label for x in followup], [x.label for x in baseline]
 

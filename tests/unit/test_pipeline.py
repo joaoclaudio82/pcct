@@ -36,3 +36,9 @@ def test_match_lesions_pairs_nearest_components():
     assert {(i, j) for i, j, _ in pairs} == {(1, 1), (2, 2)}
     assert new == [3]
     assert gone == []
+
+def test_qa_all_invalid_is_json_serializable():
+    import json
+    result = pl.qa_check(np.full((3, 3, 3), np.nan), (1, 1, 1))
+    assert result["hu_range"] == (None, None)
+    json.dumps(result, allow_nan=False)

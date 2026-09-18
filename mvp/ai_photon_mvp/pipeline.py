@@ -8,14 +8,20 @@ sobre o phantom espectral.
 import numpy as np
 from scipy import ndimage as ndi
 
+from .validation import spacing_zyx, volume_array
+
 
 # ---------------------------------------------------------------- QA
 
 def qa_check(volume_hu, spacing, expected_range=(-1100, 3200)):
     """Controle de qualidade simples: retorna alertas e um QA score 0-100."""
+    volume_hu = volume_array(volume_hu, finite=False)
+    spacing = spacing_zyx(spacing)
     alerts = []
-    vmin, vmax = float(volume_hu.min()), float(volume_hu.max())
-    if vmin < expected_range[0] or vmax > expected_range[1]:
+    finite_values = volume_hu[np.isfinite(volume_hu)]
+    vmin = float(finite_values.min()) if finite_values.size else None
+    vmax = float(finite_values.max()) if finite_values.size else None
+    if vmin is not None and (vmin < expected_range[0] or vmax > expected_range[1]):
         alerts.append(f"faixa de HU inesperada: [{vmin:.0f}, {vmax:.0f}]")
     if max(spacing) > 5.0:
         alerts.append(f"espacamento grosso: {spacing}")

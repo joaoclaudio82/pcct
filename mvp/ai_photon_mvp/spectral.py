@@ -65,6 +65,7 @@ def decompose(vmi50, vmi70):
         mu(E) = mu_rho_w(E) * rho_w + mu_rho_I(E) * c_I
     Retorna (fração de água, mapa de iodo em mg/mL).
     """
+    vmi50, vmi70 = paired_arrays(vmi50, vmi70)
     mu50 = from_hu(vmi50, 50)
     mu70 = from_hu(vmi70, 70)
     a = np.array([

@@ -94,3 +94,20 @@ Os arquivos de imagem não são versionados neste repositório; use `download_da
 ## Aviso
 
 Protótipo de pesquisa. Não é dispositivo médico, não possui validação clínica e não deve ser utilizado para apoiar decisão diagnóstica ou terapêutica. O phantom espectral opera em nível de imagem reconstruída, sem modelo de projeções por bin de energia, e as segmentações em TC real usam regras clássicas sem aprendizado.
+
+## Instalação e verificações de desenvolvimento
+
+Na raiz do repositório, instale o pacote e os extras necessários:
+
+```bash
+python -m pip install -e '.[dev,api,app]'
+python -m pytest
+python -m ruff check mvp/ai_photon_mvp tests api
+python -m uvicorn api.main:app --host 127.0.0.1 --port 8000
+# Em outro terminal:
+python -m streamlit run mvp/app.py
+```
+
+Veja o [contrato da API](docs/api.md) para formatos, limites e códigos de erro,
+e as [melhorias de validação](docs/validation_updates.md) para mudanças nos
+biomarcadores, geometria, classificação longitudinal e evidências de testes.

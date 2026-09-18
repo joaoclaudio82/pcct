@@ -1,4 +1,5 @@
 """Local research API. Put authentication and request limits at the deployment boundary."""
+
 from __future__ import annotations
 
 import tempfile
@@ -6,13 +7,12 @@ from pathlib import Path
 from typing import Annotated
 
 import SimpleITK as sitk
-from fastapi import FastAPI, File, HTTPException, UploadFile
-from starlette.concurrency import run_in_threadpool
-
 from ai_photon_mvp.io.image import load_medical_volume
 from ai_photon_mvp.pipeline import qa_check
 from ai_photon_mvp.preprocessing.body_region import detect_body_region
 from ai_photon_mvp.version import __version__
+from fastapi import FastAPI, File, HTTPException, UploadFile
+from starlette.concurrency import run_in_threadpool
 
 MAX_UPLOAD_BYTES = 128 * 1024 * 1024
 MAX_VOXELS = 64_000_000
@@ -88,6 +88,8 @@ async def inspect_exam(file: Annotated[UploadFile, File()]) -> dict:
             try:
                 return await run_in_threadpool(_inspect_path, path)
             except (ValueError, RuntimeError) as exc:
-                raise HTTPException(status_code=422, detail="Invalid or unsupported medical image") from exc
+                raise HTTPException(
+                    status_code=422, detail="Invalid or unsupported medical image"
+                ) from exc
     finally:
         await file.close()

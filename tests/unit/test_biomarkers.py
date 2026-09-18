@@ -2,6 +2,7 @@ import numpy as np
 import pytest
 from ai_photon_mvp.spectral_biomarkers import compute_lesion_biomarker
 
+
 def test_anisotropic_biomarker():
     a = np.ones((2, 2, 2))
     result = compute_lesion_biomarker(a, a * 2, (2, 3, 4), a * 100, a * 60)

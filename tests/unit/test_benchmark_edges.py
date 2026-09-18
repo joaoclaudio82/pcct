@@ -1,6 +1,8 @@
 import json
+
 import pytest
 from ai_photon_mvp.benchmark import check_against_reference
+
 
 @pytest.mark.parametrize("value", [float("nan"), float("inf"), float("-inf"), 5])
 def test_invalid_or_excessive_metric_fails(tmp_path, value):

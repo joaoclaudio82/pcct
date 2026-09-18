@@ -22,7 +22,7 @@ def resample_volume(
     old_size = image.GetSize()
     new_size = [
         max(1, int(round(sz * sp / tsp)))
-        for sz, sp, tsp in zip(old_size, old_spacing, target_xyz)
+        for sz, sp, tsp in zip(old_size, old_spacing, target_xyz, strict=True)
     ]
 
     resampler = sitk.ResampleImageFilter()

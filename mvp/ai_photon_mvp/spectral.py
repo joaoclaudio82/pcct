@@ -113,7 +113,7 @@ def make_phantom(shape=(90, 220, 220), spacing_mm=1.5):
         ("L4", (cz + 5, cy + 20, cx + 55), 12.0, 5.0),
     ]
     labels = np.zeros(shape, dtype=np.int16)
-    for k, (name, (lz, ly, lx), r_mm, conc) in enumerate(inserts, start=1):
+    for k, (_name, (lz, ly, lx), r_mm, conc) in enumerate(inserts, start=1):
         r_vox = r_mm / spacing_mm
         sph = ((z - lz) ** 2 + (y - ly) ** 2 + (x - lx) ** 2) <= r_vox ** 2
         iodine[sph] = conc

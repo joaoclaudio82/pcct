@@ -1,5 +1,4 @@
 import numpy as np
-
 from ai_photon_mvp import spectral as sp
 
 

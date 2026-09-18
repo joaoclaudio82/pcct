@@ -32,7 +32,7 @@ class MedicalVolume:
             raise ValueError("direction must be orthonormal")
 
     @classmethod
-    def from_sitk(cls, image: sitk.Image, source: str | None = None) -> "MedicalVolume":
+    def from_sitk(cls, image: sitk.Image, source: str | None = None) -> MedicalVolume:
         if image.GetDimension() != 3 or image.GetNumberOfComponentsPerPixel() != 1:
             raise ValueError("expected a scalar 3D medical image")
         md = {k: image.GetMetaData(k) for k in image.GetMetaDataKeys()}

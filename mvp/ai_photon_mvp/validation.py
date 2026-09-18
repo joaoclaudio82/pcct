@@ -1,4 +1,5 @@
 """Shared numerical input contracts; array spacing is always z, y, x."""
+
 import numpy as np
 
 

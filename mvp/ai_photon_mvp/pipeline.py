@@ -10,7 +10,6 @@ from scipy import ndimage as ndi
 
 from .validation import spacing_zyx, volume_array
 
-
 # ---------------------------------------------------------------- QA
 
 def qa_check(volume_hu, spacing, expected_range=(-1100, 3200)):

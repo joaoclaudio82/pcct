@@ -71,7 +71,7 @@ def match_lesions_hungarian(
     rows, cols = linear_sum_assignment(cost)
     pairs = []
     matched_a, matched_b = set(), set()
-    for i, j in zip(rows, cols):
+    for i, j in zip(rows, cols, strict=True):
         if cost[i, j] >= 1e5:
             continue
         pairs.append((baseline[i].label, followup[j].label, float(cost[i, j])))

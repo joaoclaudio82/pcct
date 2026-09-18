@@ -63,12 +63,7 @@ def _read_dicom_folder(path: Path) -> sitk.Image:
     series_ids = reader.GetGDCMSeriesIDs(str(path))
     if not series_ids:
         raise ValueError(f"nenhuma série DICOM encontrada em {path}")
-    # MVP policy: choose the series with most instances instead of first arbitrary UID.
-    candidates = []
-    for uid in series_ids:
-        files = reader.GetGDCMSeriesFileNames(str(path), uid)
-        candidates.append((len(files), uid, files))
-    _, _, files = max(candidates, key=lambda item: item[0])
+    files = _select_dicom_files(path)
     reader.SetFileNames(files)
     reader.MetaDataDictionaryArrayUpdateOn()
     reader.LoadPrivateTagsOff()
@@ -96,10 +91,18 @@ def load_medical_volume(path: str | Path) -> MedicalVolume:
     return volume
 
 
-def _read_first_dicom_file(path: Path) -> Path:
+def _select_dicom_files(path: Path) -> tuple[str, ...]:
+    """Select the largest series, breaking ties by UID for reproducibility."""
     reader = sitk.ImageSeriesReader()
     ids = reader.GetGDCMSeriesIDs(str(path))
     if not ids:
         raise ValueError("nenhuma série DICOM")
-    files = reader.GetGDCMSeriesFileNames(str(path), ids[0])
-    return Path(files[0])
+    candidates = [(tuple(reader.GetGDCMSeriesFileNames(str(path), uid)), uid) for uid in ids]
+    files, _ = max(candidates, key=lambda item: (len(item[0]), item[1]))
+    if not files:
+        raise ValueError("série DICOM sem arquivos")
+    return files
+
+
+def _read_first_dicom_file(path: Path) -> Path:
+    return Path(_select_dicom_files(path)[0])

@@ -131,5 +131,6 @@ def make_phantom(shape=(90, 220, 220), spacing_mm=1.5):
 
 def iodine_load_mg(iodine_mgml, mask, spacing_mm):
     """Carga de iodo Q em mg dentro de uma máscara."""
-    voxel_ml = (spacing_mm / 10.0) ** 3  # cm^3 = mL
-    return float(np.sum(iodine_mgml[mask]) * voxel_ml)
+    iodine_mgml, mask = paired_arrays(iodine_mgml, mask)
+    voxel_ml = np.prod(spacing_zyx(spacing_mm)) / 1000.0
+    return float(np.sum(iodine_mgml[mask.astype(bool)], dtype=np.float64) * voxel_ml)

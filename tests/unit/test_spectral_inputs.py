@@ -11,3 +11,7 @@ def test_invalid_dose(dose):
 def test_decomposition_rejects_misaligned_vmi():
     with pytest.raises(ValueError):
         sp.decompose(np.ones((2, 2, 2)), np.ones((1, 2, 2)))
+
+def test_anisotropic_iodine_load_and_integer_mask():
+    a = np.full((2, 2, 2), 2.0)
+    assert sp.iodine_load_mg(a, np.ones_like(a, dtype=int), (2, 3, 4)) == pytest.approx(0.384)

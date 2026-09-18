@@ -10,6 +10,8 @@ pós-reconstrução com desvio padrão escalado por 1/sqrt(fator de dose).
 import numpy as np
 from scipy import ndimage as _ndi
 
+from .validation import paired_arrays, spacing_zyx
+
 
 def ndimage_dilate(mask, iterations):
     return _ndi.binary_dilation(mask, iterations=iterations)
@@ -44,6 +46,11 @@ def from_hu(hu, energy):
 
 def simulate_vmi(water_frac, iodine_mgml, energy, dose_factor=1.0, rng=None):
     """Simula uma VMI em HU com ruído dependente da dose."""
+    if energy not in MU_RHO:
+        raise ValueError("supported energies are 50 and 70 keV")
+    if not np.isfinite(dose_factor) or dose_factor <= 0:
+        raise ValueError("dose_factor must be finite and positive")
+    water_frac, iodine_mgml = paired_arrays(water_frac, iodine_mgml)
     rng = rng or np.random.default_rng(0)
     mu = mu_voxel(energy, water_frac, iodine_mgml)
     hu = to_hu(mu, energy)

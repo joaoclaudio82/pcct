@@ -4,20 +4,25 @@ from __future__ import annotations
 import numpy as np
 from scipy import ndimage as ndi
 
+from ai_photon_mvp.validation import paired_arrays, spacing_zyx
+
 
 def dice(pred: np.ndarray, ref: np.ndarray) -> float:
+    pred, ref = paired_arrays(pred, ref)
     p, r = pred.astype(bool), ref.astype(bool)
     denom = p.sum() + r.sum()
     return 1.0 if denom == 0 else float(2 * np.logical_and(p, r).sum() / denom)
 
 
 def iou(pred: np.ndarray, ref: np.ndarray) -> float:
+    pred, ref = paired_arrays(pred, ref)
     p, r = pred.astype(bool), ref.astype(bool)
     union = np.logical_or(p, r).sum()
     return 1.0 if union == 0 else float(np.logical_and(p, r).sum() / union)
 
 
 def precision_recall(pred: np.ndarray, ref: np.ndarray) -> tuple[float, float]:
+    pred, ref = paired_arrays(pred, ref)
     p, r = pred.astype(bool), ref.astype(bool)
     tp = np.logical_and(p, r).sum()
     fp = np.logical_and(p, ~r).sum()
@@ -37,6 +42,8 @@ def surface_distances_mm(
     ref: np.ndarray,
     spacing: tuple[float, float, float],
 ) -> np.ndarray:
+    pred, ref = paired_arrays(pred, ref)
+    spacing = spacing_zyx(spacing)
     ps, rs = _surface(pred), _surface(ref)
     if not ps.any() or not rs.any():
         return np.array([], dtype=float)

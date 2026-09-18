@@ -25,6 +25,7 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           enable-cache: true
+          cache-dependency-glob: pyproject.toml
 
       - name: Set up Python
         run: uv python install ${{ matrix.python-version }}
@@ -36,4 +37,4 @@ jobs:
         run: uv run ruff check mvp/ai_photon_mvp tests api
 
       - name: Run tests with coverage
-        run: uv run pytest --cov=ai_photon_mvp --cov-report=term-missing --cov-fail-under=25
+        run: uv run python -m pytest --cov=ai_photon_mvp --cov-report=term-missing --cov-fail-under=25

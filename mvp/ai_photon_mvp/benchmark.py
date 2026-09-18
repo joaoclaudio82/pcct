@@ -58,7 +58,7 @@ def check_against_reference(
 
     for metric, maximum in reference["maximum_allowed"].items():
         value = float(metrics[metric])
-        if value > float(maximum):
+        if not np.isfinite(value) or value > float(maximum):
             failures.append(f"{metric}={value:.6f} exceeds maximum {maximum}")
 
     return failures

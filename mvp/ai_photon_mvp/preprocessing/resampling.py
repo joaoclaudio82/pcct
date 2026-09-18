@@ -5,18 +5,17 @@ import numpy as np
 import SimpleITK as sitk
 
 from ai_photon_mvp.io.image import MedicalVolume
+from ai_photon_mvp.validation import spacing_zyx as _validated_spacing
 
 
 def resample_volume(
     volume: MedicalVolume,
     target_spacing_mm: float | tuple[float, float, float] = 1.0,
     is_label: bool = False,
+    default_value: float | None = None,
 ) -> MedicalVolume:
     image = volume.to_sitk()
-    if isinstance(target_spacing_mm, (int, float)):
-        target_zyx = (float(target_spacing_mm),) * 3
-    else:
-        target_zyx = tuple(float(x) for x in target_spacing_mm)
+    target_zyx = _validated_spacing(target_spacing_mm)
     target_xyz = tuple(reversed(target_zyx))
 
     old_spacing = image.GetSpacing()
@@ -32,11 +31,17 @@ def resample_volume(
     resampler.SetOutputOrigin(image.GetOrigin())
     resampler.SetOutputDirection(image.GetDirection())
     resampler.SetTransform(sitk.Transform())
-    resampler.SetDefaultPixelValue(0)
+    if default_value is None:
+        default_value = 0.0 if is_label else -1024.0
+    if not np.isfinite(default_value):
+        raise ValueError("default_value must be finite")
+    resampler.SetDefaultPixelValue(float(default_value))
     resampler.SetInterpolator(sitk.sitkNearestNeighbor if is_label else sitk.sitkLinear)
     out = resampler.Execute(image)
-    return MedicalVolume.from_sitk(out, source=volume.source)
+    result = MedicalVolume.from_sitk(out, source=volume.source)
+    result.metadata = dict(volume.metadata)
+    return result
 
 
 def voxel_volume_ml(spacing_zyx: tuple[float, float, float]) -> float:
-    return float(np.prod(spacing_zyx) / 1000.0)
+    return float(np.prod(_validated_spacing(spacing_zyx)) / 1000.0)

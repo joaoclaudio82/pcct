@@ -6,6 +6,7 @@ from dataclasses import asdict, dataclass
 import numpy as np
 
 from ai_photon_mvp.spectral import iodine_load_mg
+from ai_photon_mvp.validation import paired_arrays, spacing_zyx
 
 
 @dataclass(slots=True)
@@ -25,14 +26,18 @@ class LesionBiomarker:
 def compute_lesion_biomarker(
     mask: np.ndarray,
     iodine_map: np.ndarray,
-    spacing_mm: float,
+    spacing_mm: float | tuple[float, float, float],
     vmi50: np.ndarray | None = None,
     vmi70: np.ndarray | None = None,
 ) -> LesionBiomarker:
+    mask, iodine_map = paired_arrays(mask, iodine_map)
+    for vmi in (vmi50, vmi70):
+        if vmi is not None:
+            paired_arrays(mask, vmi)
     m = mask.astype(bool)
     if not m.any():
         raise ValueError("a máscara da lesão está vazia")
-    voxel_ml = (spacing_mm / 10.0) ** 3
+    voxel_ml = np.prod(spacing_zyx(spacing_mm)) / 1000.0
     i = iodine_map[m].astype(float)
     h50 = float(vmi50[m].mean()) if vmi50 is not None else None
     h70 = float(vmi70[m].mean()) if vmi70 is not None else None

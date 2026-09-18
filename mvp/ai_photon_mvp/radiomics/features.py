@@ -3,12 +3,16 @@ from __future__ import annotations
 
 import numpy as np
 
+from ai_photon_mvp.validation import paired_arrays, spacing_zyx
+
 
 def basic_features(
     image: np.ndarray,
     mask: np.ndarray,
     spacing: tuple[float, float, float],
 ) -> dict[str, float]:
+    image, mask = paired_arrays(image, mask)
+    spacing = spacing_zyx(spacing)
     m = mask.astype(bool)
     if not m.any():
         return {}
